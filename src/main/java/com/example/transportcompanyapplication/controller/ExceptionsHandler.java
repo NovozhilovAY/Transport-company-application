@@ -2,6 +2,8 @@ package com.example.transportcompanyapplication.controller;
 
 import com.example.transportcompanyapplication.dto.Response;
 import com.example.transportcompanyapplication.exceptions.ResourceNotFoundException;
+import com.example.transportcompanyapplication.exceptions.UniqueExceptionMessageParser;
+import com.example.transportcompanyapplication.exceptions.UniqueFieldException;
 import org.postgresql.util.PSQLException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class ExceptionsHandler {
+    private final String UNIQUE_VIOLATION_CODE = "23505";
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Response> handleException(ResourceNotFoundException e) {
@@ -22,11 +25,17 @@ public class ExceptionsHandler {
     }
 
     @ExceptionHandler(PSQLException.class)
-    public ResponseEntity<Map<String, String>> handleDBException(PSQLException e) {
-        Map<String,String> errors = new HashMap<>();
-        errors.put("message", e.getServerErrorMessage().getMessage());
-        errors.put("detail", e.getServerErrorMessage().getDetail());
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Response> handleDBException(PSQLException e){
+        if(e.getSQLState().equals(UNIQUE_VIOLATION_CODE)){
+            String message = UniqueExceptionMessageParser.parse(e.getMessage());
+            return handleConstraintsException(new UniqueFieldException(message));
+        }
+        return new ResponseEntity<>(new Response(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UniqueFieldException.class)
+    public ResponseEntity<Response> handleConstraintsException(UniqueFieldException e) {
+        return new ResponseEntity<>(new Response(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
