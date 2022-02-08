@@ -1,8 +1,8 @@
 package com.example.transportcompanyapplication.model;
 
-import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "drivers")
@@ -12,15 +12,19 @@ public class Driver {
     private Long id;
 
     @Column(name = "last_name")
+    @NotEmpty(message = "last name should not be empty!")
     private String lastName;
 
     @Column(name = "first_name")
+    @NotEmpty(message = "first name should not be empty!")
     private String firstName;
 
     @Column(name = "middle_name")
+    @NotEmpty(message = "middle name should not be empty!")
     private String middleName;
 
     @Column(name = "driving_license")
+    @NotEmpty(message = "field should not be empty!")
     private String drivingLicense;
 
     public Driver() {

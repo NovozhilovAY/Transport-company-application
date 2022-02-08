@@ -1,13 +1,11 @@
 package com.example.transportcompanyapplication.controller;
 
 import com.example.transportcompanyapplication.exceptions.ResourceNotFoundException;
-import com.example.transportcompanyapplication.dto.Response;
 import com.example.transportcompanyapplication.model.Driver;
 import com.example.transportcompanyapplication.repository.DriverRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -32,7 +30,7 @@ public class DriverController {
     }
 
     @PostMapping
-    public Driver createDriver(@RequestBody Driver driver){
+    public Driver createDriver(@RequestBody @Valid Driver driver){
         return repository.save(driver);
     }
 
@@ -46,16 +44,10 @@ public class DriverController {
     }
 
     @PutMapping
-    public Driver updateDriver(@RequestBody Driver driver) throws ResourceNotFoundException {
+    public Driver updateDriver(@RequestBody @Valid Driver driver) throws ResourceNotFoundException {
         repository.findById(driver.getId()).orElseThrow(
                 ()-> new ResourceNotFoundException("Driver with id = " + driver.getId() + " not found")
         );
         return repository.save(driver);
     }
-
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Response> handleException(ResourceNotFoundException e) {
-        return new ResponseEntity<>(new Response(e.getMessage()), HttpStatus.NOT_FOUND);
-    }
-
 }
