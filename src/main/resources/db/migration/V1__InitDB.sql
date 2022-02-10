@@ -572,7 +572,7 @@ ALTER TABLE ONLY public.cars
 --
 
 ALTER TABLE ONLY public.history
-    ADD CONSTRAINT history_car_id_fkey FOREIGN KEY (car_id) REFERENCES public.cars(id) ON DELETE RESTRICT;
+    ADD CONSTRAINT history_car_id_fkey FOREIGN KEY (car_id) REFERENCES public.cars(id) ON DELETE CASCADE;
 
 
 --
@@ -581,7 +581,7 @@ ALTER TABLE ONLY public.history
 --
 
 ALTER TABLE ONLY public.log
-    ADD CONSTRAINT log_car_id_fkey FOREIGN KEY (car_id) REFERENCES public.cars(id) ON DELETE RESTRICT;
+    ADD CONSTRAINT log_car_id_fkey FOREIGN KEY (car_id) REFERENCES public.cars(id) ON DELETE CASCADE;
 
 
 --

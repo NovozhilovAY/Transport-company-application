@@ -38,6 +38,4 @@ public class DriverService {
         findById(driver.getId());
         return repository.save(driver);
     }
-
-
 }
