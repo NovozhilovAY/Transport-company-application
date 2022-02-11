@@ -1,9 +1,7 @@
 package com.example.transportcompanyapplication.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 @Entity
@@ -28,6 +26,7 @@ public class Car {
     private String model;
 
     @Column(name = "year", nullable = false)
+    @Min(value = 1900, message = "")
     private Integer year;
 
     @Column(name = "kilometrage", nullable = false)
@@ -36,18 +35,26 @@ public class Car {
 
 
     @Column(name = "license_plate", nullable = false)
+    @NotBlank(message = "field 'licensePlate' should not be empty!")
     private String licensePlate;
 
     @Column(name = "maintenance_freq", nullable = false)
+    @NotNull
+    @Positive(message = "maintenanceFreq must be positive")
     private Double maintenanceFreq;
 
     @Column(name = "km_before_maint", nullable = false)
+    @NotNull
     private Double kmBeforeMaint;
 
     @Column(name = "latitude", nullable = false)
+    @Min(value = -90, message = "latitude should not be less than -90")
+    @Max(value = 90, message = "latitude should not be more than 90")
     private Double latitude;
 
     @Column(name = "longitude", nullable = false, precision = 9, scale = 6)
+    @Min(value = -180, message = "longitude should not be less than -180")
+    @Max(value = 180, message = "longitude should not be more than 180")
     private Double longitude;
 
     @OneToOne
@@ -167,5 +174,9 @@ public class Car {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void doMaintenance(){
+        this.kmBeforeMaint = this.maintenanceFreq;
     }
 }

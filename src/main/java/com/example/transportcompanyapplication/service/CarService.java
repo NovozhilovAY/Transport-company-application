@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public class CarService {
-    private CarRepository repository;
+    private final CarRepository repository;
 
     public CarService(CarRepository repository) {
         this.repository = repository;
@@ -46,5 +46,11 @@ public class CarService {
         updatedCar.setLatitude(newCoordinates.getLatitude());
         updatedCar.setLongitude(newCoordinates.getLongitude());
         repository.save(updatedCar);
+    }
+
+    public void doMaintenance(Long id) throws ResourceNotFoundException {
+        Car car = findById(id);
+        car.doMaintenance();
+        repository.save(car);
     }
 }

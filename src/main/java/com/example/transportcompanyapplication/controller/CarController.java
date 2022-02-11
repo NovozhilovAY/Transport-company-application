@@ -47,9 +47,17 @@ public class CarController {
         return new ResponseEntity<>(new Response("Coordinates was updated"), HttpStatus.OK);
     }
 
+    @PatchMapping("/maintenance/{id}")
+    public ResponseEntity<Response> doMaintenance(@PathVariable Long id) throws ResourceNotFoundException {
+        carService.doMaintenance(id);
+        return new ResponseEntity<>(new Response("The car with id = "+id+" has been serviced"), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     private Car deleteCarById(@PathVariable Long id) throws ResourceNotFoundException {
         return carService.delete(id);
     }
+
+
 
 }
