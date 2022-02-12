@@ -23,7 +23,7 @@ public class HistoryService {
     public Double getKilometrageByDate(KmByDateRequest request) throws ResourceNotFoundException {
         this.checkCarId(request.getCarId());
         Date currentDate = new Date(System.currentTimeMillis());
-        if(currentDate.equals(request.getDate())){
+        if(DateComparator.equal(currentDate, request.getDate())){
             return historyRepository.getKmForToday(request.getCarId());
         }else {
             return historyRepository.getKmByDate(request.getCarId(),request.getDate());
@@ -34,7 +34,7 @@ public class HistoryService {
         this.checkCarId(request.getCarId());
         Date currentDate = new Date(System.currentTimeMillis());
         Double result = historyRepository.getKmByDateInterval(request.getCarId(), request.getDate(),request.getDate2());
-        if(currentDate.equals(request.getDate2())){
+        if(DateComparator.equal(currentDate,request.getDate2())){
             return result + historyRepository.getKmForToday(request.getCarId());
         }else {
             return result;

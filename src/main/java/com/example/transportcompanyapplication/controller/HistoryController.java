@@ -6,6 +6,8 @@ import com.example.transportcompanyapplication.exceptions.ResourceNotFoundExcept
 import com.example.transportcompanyapplication.service.HistoryService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("api/history")
 public class HistoryController {
@@ -16,12 +18,12 @@ public class HistoryController {
     }
 
     @GetMapping("/date")
-    public Double getKilometrageByDate(KmByDateRequest request) throws ResourceNotFoundException {
+    public Double getKilometrageByDate(@Valid KmByDateRequest request) throws ResourceNotFoundException {
         return service.getKilometrageByDate(request);
     }
 
     @GetMapping("/date-interval")
-    public Double getKilometrageByDateInterval(KmByDateIntervalRequest request) throws ResourceNotFoundException {
+    public Double getKilometrageByDateInterval(@Valid KmByDateIntervalRequest request) throws ResourceNotFoundException {
         return service.getKilometrageByDateInterval(request);
     }
 
