@@ -1,4 +1,4 @@
-package com.example.transportcompanyapplication.service;
+package com.example.transportcompanyapplication.util;
 
 import java.sql.Date;
 
