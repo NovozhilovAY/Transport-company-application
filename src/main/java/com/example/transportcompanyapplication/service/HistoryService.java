@@ -5,6 +5,7 @@ import com.example.transportcompanyapplication.dto.KmByDateRequest;
 import com.example.transportcompanyapplication.exceptions.ResourceNotFoundException;
 import com.example.transportcompanyapplication.repository.CarRepository;
 import com.example.transportcompanyapplication.repository.HistoryRepository;
+import com.example.transportcompanyapplication.util.DateComparator;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class HistoryService {
         this.carRepository = carRepository;
     }
 
-    public Double getKilometrageByDate(KmByDateRequest request) throws ResourceNotFoundException {
+    public Double getKilometrageByDate(KmByDateRequest request){
         this.checkCarId(request.getCarId());
         Date currentDate = new Date(System.currentTimeMillis());
         if(DateComparator.equal(currentDate, request.getDate())){
@@ -30,7 +31,7 @@ public class HistoryService {
         }
     }
 
-    public Double getKilometrageByDateInterval(KmByDateIntervalRequest request) throws ResourceNotFoundException{
+    public Double getKilometrageByDateInterval(KmByDateIntervalRequest request){
         this.checkCarId(request.getCarId());
         Date currentDate = new Date(System.currentTimeMillis());
         Double result = historyRepository.getKmByDateInterval(request.getCarId(), request.getDate(),request.getDate2());
@@ -46,7 +47,7 @@ public class HistoryService {
         historyRepository.clearLog();
     }
 
-    private void checkCarId(Long carId) throws ResourceNotFoundException {
+    private void checkCarId(Long carId){
         carRepository.findById(carId).orElseThrow(
                 ()->new ResourceNotFoundException("Car with id = " + carId + " not found!")
         );
