@@ -1,10 +1,12 @@
 package com.example.transportcompanyapplication.util;
 
 import org.springframework.stereotype.Component;
-import org.springframework.util.ReflectionUtils;
 
 
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 
 @Component
 public class PatchMapper<T> {
@@ -18,14 +20,13 @@ public class PatchMapper<T> {
         Field[] fields = object.getClass().getDeclaredFields();
         for (Field field : fields){
             Object fieldValue = null;
-            field.setAccessible(true);
             try {
-                fieldValue = field.get(object);
-            } catch (IllegalAccessException e) {
+                fieldValue = new PropertyDescriptor(field.getName(), object.getClass()).getReadMethod().invoke(object);
+                if(fieldValue!=null){
+                    new PropertyDescriptor(field.getName(),object.getClass()).getWriteMethod().invoke(target, fieldValue);
+                }
+            } catch (IllegalAccessException | InvocationTargetException | IntrospectionException e) {
                 e.printStackTrace();
-            }
-            if(fieldValue!=null){
-                ReflectionUtils.setField(field, target, fieldValue);
             }
         }
         validator.validate(target);
