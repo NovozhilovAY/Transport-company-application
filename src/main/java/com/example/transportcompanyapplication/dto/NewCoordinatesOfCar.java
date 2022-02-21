@@ -5,8 +5,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 
 public class NewCoordinatesOfCar {
-    @Positive
-    private Long carId;
 
     @Min(value = -90, message = "latitude should not be less than -90")
     @Max(value = 90, message = "latitude should not be more than 90")
@@ -19,18 +17,9 @@ public class NewCoordinatesOfCar {
     public NewCoordinatesOfCar() {
     }
 
-    public NewCoordinatesOfCar(Long carId, Double latitude, Double longitude) {
-        this.carId = carId;
+    public NewCoordinatesOfCar(Double latitude, Double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
-    }
-
-    public Long getCarId() {
-        return carId;
-    }
-
-    public void setCarId(Long carId) {
-        this.carId = carId;
     }
 
     public Double getLatitude() {
