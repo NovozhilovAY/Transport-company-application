@@ -1,12 +1,12 @@
 package com.example.transportcompanyapplication.controller;
 
-import com.example.transportcompanyapplication.dto.Response;
 import com.example.transportcompanyapplication.exceptions.ResourceNotFoundException;
 import com.example.transportcompanyapplication.model.User;
 import com.example.transportcompanyapplication.service.UserService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping
     public List<User> getAllUsers(){
-        return userService.getAll();
+        return userService.findAll();
     }
 
     @GetMapping("/{id}")
@@ -29,18 +29,20 @@ public class UserController {
     }
 
     @PostMapping
-    public User saveUser(@RequestBody User user){
-        return userService.save(user);
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public User saveUser(@RequestBody @Valid User user){
+        return userService.save(user, user.getId());
     }
 
     @PutMapping
-    public User updateUser(@RequestBody User user) throws ResourceNotFoundException {
-        return userService.update(user);
+    public User updateUser(@RequestBody @Valid User user) throws ResourceNotFoundException {
+        return userService.update(user, user.getId());
     }
 
     @DeleteMapping
-    public ResponseEntity<Response> deleteUserById(Integer id) throws ResourceNotFoundException{
-        return userService.deleteById(id);
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteUserById(Integer id) throws ResourceNotFoundException{
+        userService.deleteById(id);
     }
 
 }
