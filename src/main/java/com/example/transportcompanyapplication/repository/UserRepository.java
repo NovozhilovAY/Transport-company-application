@@ -1,9 +1,12 @@
 package com.example.transportcompanyapplication.repository;
 
 import com.example.transportcompanyapplication.model.User;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.transportcompanyapplication.repository.extended.ExtendedRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends ExtendedRepository<User, Integer> {
+    Optional<User> findByLogin(String login);
 }
