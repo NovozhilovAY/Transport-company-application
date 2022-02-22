@@ -1,22 +1,20 @@
 package com.example.transportcompanyapplication.service;
 
 import com.example.transportcompanyapplication.exceptions.ResourceNotFoundException;
+import com.example.transportcompanyapplication.repository.extended.ExtendedRepository;
 import com.example.transportcompanyapplication.util.PatchMapper;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
 
 
-public abstract class AbstractService<T, K> {
+public abstract class AbstractService<T, ID> {
 
-    protected final JpaRepository<T, K> repository;
+    protected final ExtendedRepository<T, ID> repository;
     protected final PatchMapper<T> mapper;
 
 
-    protected AbstractService(JpaRepository<T, K> repository, PatchMapper<T> mapper) {
+    protected AbstractService(ExtendedRepository<T, ID> repository, PatchMapper<T> mapper) {
         this.repository = repository;
         this.mapper = mapper;
     }
@@ -25,29 +23,30 @@ public abstract class AbstractService<T, K> {
         return repository.findAll();
     }
 
-    public T findById(K id){
+    public T findById(ID id){
         return repository.findById(id).orElseThrow(
                 ()->new ResourceNotFoundException("Resource with id = "+ id +" not found")
         );
     }
 
-
-    public T save(T entity, K id){
-        return repository.saveAndFlush(entity);
+    public T save(T entity, ID id){
+        repository.insert(entity);
+        return findById(id);
     }
 
-    public T update(T entity, K id){
-        this.findById(id);
-        return this.save(entity,id);
+    public T update(T entity, ID id){
+        repository.getById(id);
+        repository.update(entity);
+        return findById(id);
     }
 
-    public T partialUpdate(T entity, K id){
+    public T partialUpdate(T entity, ID id){
         T updatedEntity = findById(id);
         mapper.update(entity, updatedEntity);
-        return this.save(updatedEntity, id);
+        return this.update(entity,id);
     }
 
-    public void deleteById(K id){
+    public void deleteById(ID id){
         repository.deleteById(id);
     }
 
