@@ -1,164 +1,168 @@
-CREATE TABLE public.cars (
-    id integer NOT NULL,
-    brand character varying NOT NULL,
-    model character varying NOT NULL,
-    year numeric(4,0) NOT NULL,
-    kilometrage numeric(11,3) NOT NULL,
-    license_plate character varying NOT NULL,
-    maintenance_freq numeric(5,0) NOT NULL,
-    km_before_maint numeric(8,3) NOT NULL,
-    latitude numeric(9,6) NOT NULL,
-    longitude numeric(9,6) NOT NULL,
-    driver_id integer
+--Table drivers
+--------------------------------------------------------------------
+create table drivers
+(
+    id              serial
+        constraint drivers_pkey
+            primary key,
+    last_name       varchar not null,
+    first_name      varchar not null,
+    middle_name     varchar not null,
+    driving_license varchar not null
+        constraint drivers_driving_license_key
+            unique
 );
 
+alter table drivers
+    owner to postgres;
+--------------------------------------------------------------------
 
-ALTER TABLE public.cars OWNER TO postgres;
 
-CREATE SEQUENCE public.cars_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
 
-ALTER TABLE public.cars_id_seq OWNER TO postgres;
 
-ALTER SEQUENCE public.cars_id_seq OWNED BY public.cars.id;
-
-CREATE TABLE public.drivers (
-    id integer NOT NULL,
-    last_name character varying NOT NULL,
-    first_name character varying NOT NULL,
-    middle_name character varying NOT NULL,
-    driving_license character varying NOT NULL
+--Table cars
+--------------------------------------------------------------------
+create table cars
+(
+    id               serial
+        constraint cars_pkey
+            primary key,
+    brand            varchar        not null,
+    model            varchar        not null,
+    year             numeric(4)     not null,
+    kilometrage      numeric(11, 3) not null,
+    license_plate    varchar        not null
+        constraint cars_license_plate_key
+            unique,
+    maintenance_freq numeric(5)     not null,
+    km_before_maint  numeric(8, 3)  not null,
+    latitude         numeric(9, 6)  not null,
+    longitude        numeric(9, 6)  not null,
+    driver_id        integer
+        constraint cars_driver_id_key
+            unique
+        constraint cars_driver_id_fkey
+            references drivers
+            on delete restrict
 );
 
-ALTER TABLE public.drivers OWNER TO postgres;
+alter table cars
+    owner to postgres;
+--------------------------------------------------------------------
 
 
-CREATE SEQUENCE public.drivers_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
 
-ALTER TABLE public.drivers_id_seq OWNER TO postgres;
-
-ALTER SEQUENCE public.drivers_id_seq OWNED BY public.drivers.id;
-
-
-CREATE TABLE public.history (
-    id integer NOT NULL,
-    car_id integer NOT NULL,
-    h_date date NOT NULL,
-    kilometrage numeric(7,3) NOT NULL
+--Table history
+--------------------------------------------------------------------
+create table history
+(
+    id          serial
+        constraint history_pkey
+            primary key,
+    car_id      integer       not null
+        constraint history_car_id_fkey
+            references cars
+            on delete cascade,
+    h_date      date          not null,
+    kilometrage numeric(7, 3) not null
 );
 
-ALTER TABLE public.history OWNER TO postgres;
+alter table history
+    owner to postgres;
+--------------------------------------------------------------------
 
 
-CREATE SEQUENCE public.history_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
 
 
-ALTER TABLE public.history_id_seq OWNER TO postgres;
-
-ALTER SEQUENCE public.history_id_seq OWNED BY public.history.id;
-
-CREATE TABLE public.log (
-    id integer NOT NULL,
-    car_id integer NOT NULL,
-    latitude numeric(9,6) NOT NULL,
-    longitude numeric(9,6) NOT NULL,
-    log_time timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    kilometrage numeric(7,3)
+--Table log
+--------------------------------------------------------------------
+create table log
+(
+    id          serial
+        constraint log_pkey
+            primary key,
+    car_id      integer                             not null
+        constraint log_car_id_fkey
+            references cars
+            on delete cascade,
+    latitude    numeric(9, 6)                       not null,
+    longitude   numeric(9, 6)                       not null,
+    log_time    timestamp default CURRENT_TIMESTAMP not null,
+    kilometrage numeric(7, 3)
 );
 
-
-ALTER TABLE public.log OWNER TO postgres;
-
-
-CREATE SEQUENCE public.log_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+alter table log
+    owner to postgres;
+--------------------------------------------------------------------
 
 
-ALTER TABLE public.log_id_seq OWNER TO postgres;
 
-
-ALTER SEQUENCE public.log_id_seq OWNED BY public.log.id;
-
-
-CREATE TABLE public.roles (
-    id integer NOT NULL,
-    name character varying NOT NULL
+--Table users
+--------------------------------------------------------------------
+create table users
+(
+    id       serial
+        constraint users_pkey
+            primary key,
+    login    varchar not null
+        constraint users_login_key
+            unique,
+    password varchar not null
 );
 
-
-ALTER TABLE public.roles OWNER TO postgres;
-
-CREATE SEQUENCE public.roles_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+alter table users
+    owner to postgres;
+--------------------------------------------------------------------
 
 
-ALTER TABLE public.roles_id_seq OWNER TO postgres;
 
 
-ALTER SEQUENCE public.roles_id_seq OWNED BY public.roles.id;
-
-
-CREATE TABLE public.user_roles (
-    user_id integer NOT NULL,
-    role_id integer NOT NULL
+--Table roles
+--------------------------------------------------------------------
+create table roles
+(
+    id   serial
+        constraint roles_pkey
+            primary key,
+    name varchar not null
+        constraint roles_name_key
+            unique
 );
 
+alter table roles
+    owner to postgres;
+--------------------------------------------------------------------
 
-ALTER TABLE public.user_roles OWNER TO postgres;
 
-CREATE TABLE public.users (
-    id integer NOT NULL,
-    login character varying NOT NULL,
-    password character varying NOT NULL
+
+
+--Table user_roles
+--------------------------------------------------------------------
+create table user_roles
+(
+    user_id integer not null
+        constraint user_roles_user_id_fkey
+            references users,
+    role_id integer not null
+        constraint user_roles_role_id_fkey
+            references roles,
+    constraint user_roles_user_id_role_id_key
+        unique (user_id, role_id)
 );
 
-ALTER TABLE public.users OWNER TO postgres;
+alter table user_roles
+    owner to postgres;
+--------------------------------------------------------------------
 
 
-CREATE SEQUENCE public.users_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
 
 
-ALTER TABLE public.users_id_seq OWNER TO postgres;
-
-ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
-
-
-CREATE FUNCTION public.clear_log() RETURNS void
-    LANGUAGE plpgsql
-AS $$
+--Function clear_log
+--------------------------------------------------------------------
+create function clear_log() returns void
+    language plpgsql
+as
+$$
 BEGIN
 
     INSERT INTO history (car_id, h_date, kilometrage)
@@ -172,13 +176,18 @@ BEGIN
 END;
 $$;
 
+alter function clear_log() owner to postgres;
+--------------------------------------------------------------------
 
-ALTER FUNCTION public.clear_log() OWNER TO postgres;
 
 
-CREATE FUNCTION public.get_distance(lat1 numeric, long1 numeric, lat2 numeric, long2 numeric) RETURNS numeric
-    LANGUAGE plpgsql
-AS $$
+
+--Function get_distance
+--------------------------------------------------------------------
+create function get_distance(lat1 numeric, long1 numeric, lat2 numeric, long2 numeric) returns numeric
+    language plpgsql
+as
+$$
 DECLARE
     lt1 numeric;
     lg1 numeric;
@@ -193,13 +202,18 @@ BEGIN
 END;
 $$;
 
+alter function get_distance(numeric, numeric, numeric, numeric) owner to postgres;
+--------------------------------------------------------------------
 
-ALTER FUNCTION public.get_distance(lat1 numeric, long1 numeric, lat2 numeric, long2 numeric) OWNER TO postgres;
 
 
-CREATE FUNCTION public.insert_car() RETURNS trigger
-    LANGUAGE plpgsql
-AS $$
+
+--Trigger insert_car
+--------------------------------------------------------------------
+create function insert_car() returns trigger
+    language plpgsql
+as
+$$
 BEGIN
 
     INSERT INTO log (car_id, latitude, longitude, kilometrage)
@@ -209,14 +223,17 @@ BEGIN
 END;
 $$;
 
+alter function insert_car() owner to postgres;
+--------------------------------------------------------------------
 
-ALTER FUNCTION public.insert_car() OWNER TO postgres;
 
 
-
-CREATE FUNCTION public.update_position() RETURNS trigger
-    LANGUAGE plpgsql
-AS $$
+--Trigger update_position
+--------------------------------------------------------------------
+create function update_position() returns trigger
+    language plpgsql
+as
+$$
 DECLARE
     distance numeric;
 
@@ -240,78 +257,11 @@ BEGIN
 END;
 $$;
 
-
-ALTER FUNCTION public.update_position() OWNER TO postgres;
-
-ALTER TABLE ONLY public.cars ALTER COLUMN id SET DEFAULT nextval('public.cars_id_seq'::regclass);
-
-ALTER TABLE ONLY public.drivers ALTER COLUMN id SET DEFAULT nextval('public.drivers_id_seq'::regclass);
-
-ALTER TABLE ONLY public.history ALTER COLUMN id SET DEFAULT nextval('public.history_id_seq'::regclass);
-
-ALTER TABLE ONLY public.log ALTER COLUMN id SET DEFAULT nextval('public.log_id_seq'::regclass);
-
-ALTER TABLE ONLY public.roles ALTER COLUMN id SET DEFAULT nextval('public.roles_id_seq'::regclass);
+alter function update_position() owner to postgres;
+--------------------------------------------------------------------
 
 
-ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
-ALTER TABLE ONLY public.cars
-    ADD CONSTRAINT cars_driver_id_key UNIQUE (driver_id);
-
-ALTER TABLE ONLY public.cars
-    ADD CONSTRAINT cars_license_plate_key UNIQUE (license_plate);
-
-ALTER TABLE ONLY public.cars
-    ADD CONSTRAINT cars_pkey PRIMARY KEY (id);
-
-ALTER TABLE ONLY public.drivers
-    ADD CONSTRAINT drivers_driving_license_key UNIQUE (driving_license);
-
-ALTER TABLE ONLY public.drivers
-    ADD CONSTRAINT drivers_pkey PRIMARY KEY (id);
-
-ALTER TABLE ONLY public.history
-    ADD CONSTRAINT history_pkey PRIMARY KEY (id);
-
-ALTER TABLE ONLY public.log
-    ADD CONSTRAINT log_pkey PRIMARY KEY (id);
-
-ALTER TABLE ONLY public.roles
-    ADD CONSTRAINT roles_name_key UNIQUE (name);
-
-ALTER TABLE ONLY public.roles
-    ADD CONSTRAINT roles_pkey PRIMARY KEY (id);
-
-ALTER TABLE ONLY public.user_roles
-    ADD CONSTRAINT user_roles_user_id_role_id_key UNIQUE (user_id, role_id);
-
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT users_login_key UNIQUE (login);
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
-
-CREATE TRIGGER insert_new_car AFTER INSERT ON public.cars FOR EACH ROW EXECUTE FUNCTION public.insert_car();
-
-CREATE TRIGGER update_car_position AFTER UPDATE OF latitude, longitude ON public.cars FOR EACH ROW EXECUTE FUNCTION public.update_position();
-
-ALTER TABLE ONLY public.cars
-    ADD CONSTRAINT cars_driver_id_fkey FOREIGN KEY (driver_id) REFERENCES public.drivers(id) ON DELETE RESTRICT NOT VALID;
-
-ALTER TABLE ONLY public.history
-    ADD CONSTRAINT history_car_id_fkey FOREIGN KEY (car_id) REFERENCES public.cars(id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY public.log
-    ADD CONSTRAINT log_car_id_fkey FOREIGN KEY (car_id) REFERENCES public.cars(id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY public.user_roles
-    ADD CONSTRAINT user_roles_role_id_fkey FOREIGN KEY (role_id) REFERENCES public.roles(id);
-
-
-ALTER TABLE ONLY public.user_roles
-    ADD CONSTRAINT user_roles_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 INSERT INTO roles(name) VALUES ('ROLE_ADMIN');
 INSERT INTO roles(name) VALUES ('ROLE_DISPATCHER');
@@ -319,6 +269,3 @@ INSERT INTO roles(name) VALUES ('ROLE_DEVICE');
 
 INSERT INTO users(login, password) VALUES ('admin', '$2a$10$.BotI0.UfIymUOajsgB0rez7XlvPgzgdP38TtHSf.vxsxHrd4dmPi');
 INSERT INTO user_roles(user_id, role_id) VALUES (1,1);
-
-
-
