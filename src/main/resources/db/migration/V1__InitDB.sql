@@ -260,7 +260,8 @@ $$;
 alter function update_position() owner to postgres;
 --------------------------------------------------------------------
 
-
+CREATE TRIGGER insert_new_car AFTER INSERT ON public.cars FOR EACH ROW EXECUTE FUNCTION public.insert_car();
+CREATE TRIGGER update_car_position AFTER UPDATE OF latitude, longitude ON public.cars FOR EACH ROW EXECUTE FUNCTION public.update_position();
 
 
 INSERT INTO roles(name) VALUES ('ROLE_ADMIN');
@@ -269,3 +270,9 @@ INSERT INTO roles(name) VALUES ('ROLE_DEVICE');
 
 INSERT INTO users(login, password) VALUES ('admin', '$2a$10$.BotI0.UfIymUOajsgB0rez7XlvPgzgdP38TtHSf.vxsxHrd4dmPi');
 INSERT INTO user_roles(user_id, role_id) VALUES (1,1);
+
+INSERT INTO users(login, password) VALUES ('device', '$2a$10$tjbH0B5f5Yy7DzfnxS1W2uW1RfVB8ZVmQPcGSlYYa5GJeDZt4LJ6y');
+INSERT INTO user_roles(user_id, role_id) VALUES (2,3);
+
+INSERT INTO users(login, password) VALUES ('dispatcher', '$2a$10$6e60Gr./BAImN4zwKmzp8ujAezYlfTxq0X3zeRSIurN4Cg.zKN0vq');
+INSERT INTO user_roles(user_id, role_id) VALUES (3,2);

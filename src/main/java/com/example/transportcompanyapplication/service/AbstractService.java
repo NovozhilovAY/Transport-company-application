@@ -29,13 +29,12 @@ public abstract class AbstractService<T, ID> {
         );
     }
 
-    public T save(T entity, ID id){
-        repository.insert(entity);
-        return findById(id);
+    public T save(T entity){
+        return repository.save(entity);
     }
 
     public T update(T entity, ID id){
-        repository.getById(id);
+        this.findById(id);
         repository.update(entity);
         return findById(id);
     }
@@ -43,7 +42,7 @@ public abstract class AbstractService<T, ID> {
     public T partialUpdate(T entity, ID id){
         T updatedEntity = findById(id);
         mapper.update(entity, updatedEntity);
-        return this.update(entity,id);
+        return this.update(updatedEntity,id);
     }
 
     public void deleteById(ID id){

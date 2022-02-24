@@ -1,16 +1,11 @@
 package com.example.transportcompanyapplication.service;
 
-import com.example.transportcompanyapplication.dto.Response;
-import com.example.transportcompanyapplication.exceptions.ResourceNotFoundException;
 import com.example.transportcompanyapplication.model.User;
 import com.example.transportcompanyapplication.repository.UserRepository;
 import com.example.transportcompanyapplication.util.PatchMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class UserService extends AbstractService<User, Integer>{
@@ -21,9 +16,9 @@ public class UserService extends AbstractService<User, Integer>{
     }
 
     @Override
-    public User save(User user, Integer id) {
+    public User save(User user) {
         this.encodePassword(user);
-        return super.save(user, id);
+        return super.save(user);
     }
 
     @Override
@@ -42,7 +37,7 @@ public class UserService extends AbstractService<User, Integer>{
                 !passwordEncoder.encode(newPass).equals(oldPass)){
             updatedUser.setPassword(passwordEncoder.encode(newPass));
         }
-        return super.update(user,id);
+        return super.update(updatedUser,id);
     }
 
     private void encodePassword(User user){

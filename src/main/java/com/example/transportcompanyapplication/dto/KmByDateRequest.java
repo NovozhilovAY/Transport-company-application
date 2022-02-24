@@ -7,7 +7,7 @@ import java.sql.Date;
 public class KmByDateRequest {
     @Positive
     private Long carId;
-    @Past(message = "date should be correct")
+
     private Date date;
 
     public KmByDateRequest(Long carId, Date date) {

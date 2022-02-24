@@ -4,7 +4,7 @@ import javax.validation.constraints.Past;
 import java.sql.Date;
 
 public class KmByDateIntervalRequest extends KmByDateRequest{
-    @Past(message = "date should be correct")
+
     private Date date2;
 
     public KmByDateIntervalRequest(Long carId, Date date, Date date2) {

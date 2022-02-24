@@ -1,6 +1,5 @@
 package com.example.transportcompanyapplication.controller;
 
-import com.example.transportcompanyapplication.exceptions.ResourceNotFoundException;
 import com.example.transportcompanyapplication.model.User;
 import com.example.transportcompanyapplication.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -24,25 +23,30 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Integer id)throws ResourceNotFoundException {
+    public User getUserById(@PathVariable Integer id){
         return userService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public User saveUser(@RequestBody @Valid User user){
-        return userService.save(user, user.getId());
+        return userService.save(user);
     }
 
     @PutMapping
-    public User updateUser(@RequestBody @Valid User user) throws ResourceNotFoundException {
+    public User updateUser(@RequestBody @Valid User user){
         return userService.update(user, user.getId());
     }
 
     @DeleteMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteUserById(Integer id) throws ResourceNotFoundException{
+    public void deleteUserById(Integer id){
         userService.deleteById(id);
+    }
+
+    @PatchMapping("/{id}")
+    public User partialUpdate(@PathVariable Integer id, @RequestBody User user){
+        return userService.partialUpdate(user, id);
     }
 
 }

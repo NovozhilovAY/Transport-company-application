@@ -21,21 +21,11 @@ public class ExtendedRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> im
         this.entityManager = em;
     }
 
-
     @Transactional
     @Override
     public void update(T entity) {
         Session session = (Session)entityManager.getDelegate();
         session.update(entity);
-        session.flush();
-        session.clear();
-    }
-
-    @Transactional
-    @Override
-    public void insert(T entity) {
-        Session session = (Session)entityManager.getDelegate();
-        session.save(entity);
         session.flush();
         session.clear();
     }

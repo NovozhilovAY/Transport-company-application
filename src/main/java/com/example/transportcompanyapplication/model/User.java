@@ -1,6 +1,7 @@
 package com.example.transportcompanyapplication.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
@@ -13,13 +14,15 @@ public class User {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @NotBlank
     @Column(name = "login", nullable = false)
     private String login;
 
+    @NotBlank
     @Column(name = "password", nullable = false)
     private String password;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
     joinColumns = @JoinColumn(name = "user_id"),
     inverseJoinColumns = @JoinColumn(name = "role_id"))

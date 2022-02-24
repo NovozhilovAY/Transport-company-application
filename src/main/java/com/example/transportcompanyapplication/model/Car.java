@@ -1,8 +1,8 @@
 package com.example.transportcompanyapplication.model;
 
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.math.BigDecimal;
 
 @Entity
 @Table(name = "cars", indexes = {

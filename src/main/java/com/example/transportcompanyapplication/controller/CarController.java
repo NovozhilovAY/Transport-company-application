@@ -1,18 +1,13 @@
 package com.example.transportcompanyapplication.controller;
 
 import com.example.transportcompanyapplication.dto.NewCoordinatesOfCar;
-import com.example.transportcompanyapplication.dto.Response;
-import com.example.transportcompanyapplication.exceptions.ResourceNotFoundException;
 import com.example.transportcompanyapplication.model.Car;
 import com.example.transportcompanyapplication.service.CarService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/cars")
@@ -36,7 +31,7 @@ public class CarController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public Car createCar(@RequestBody @Valid Car car){
-        return carService.save(car,car.getId());
+        return carService.save(car);
     }
 
     @PutMapping

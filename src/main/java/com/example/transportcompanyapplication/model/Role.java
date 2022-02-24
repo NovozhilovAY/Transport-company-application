@@ -1,6 +1,7 @@
 package com.example.transportcompanyapplication.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "roles", indexes = {
@@ -12,6 +13,7 @@ public class Role {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @NotBlank(message = "invalid value")
     @Column(name = "name", nullable = false)
     private String name;
 

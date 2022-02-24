@@ -1,15 +1,12 @@
 package com.example.transportcompanyapplication.controller;
 
-import com.example.transportcompanyapplication.exceptions.ResourceNotFoundException;
 import com.example.transportcompanyapplication.model.Driver;
 import com.example.transportcompanyapplication.service.DriverService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/drivers")
@@ -34,7 +31,7 @@ public class DriverController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public Driver createDriver(@RequestBody @Valid Driver driver){
-        return service.save(driver, driver.getId());
+        return service.save(driver);
     }
 
     @DeleteMapping("/{id}")

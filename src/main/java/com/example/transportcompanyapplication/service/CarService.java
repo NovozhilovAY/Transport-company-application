@@ -4,9 +4,7 @@ import com.example.transportcompanyapplication.dto.NewCoordinatesOfCar;
 import com.example.transportcompanyapplication.model.Car;
 import com.example.transportcompanyapplication.repository.CarRepository;
 import com.example.transportcompanyapplication.util.PatchMapper;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CarService extends AbstractService<Car, Long>{
@@ -26,6 +24,6 @@ public class CarService extends AbstractService<Car, Long>{
     public Car doMaintenance(Long id){
         Car car = findById(id);
         car.doMaintenance();
-        return this.save(car, id);
+        return save(car);
     }
 }
