@@ -1,5 +1,6 @@
 package com.example.transportcompanyapplication.service;
 
+import com.example.transportcompanyapplication.exceptions.ResourceNotFoundException;
 import com.example.transportcompanyapplication.model.User;
 import com.example.transportcompanyapplication.repository.UserRepository;
 import com.example.transportcompanyapplication.util.PatchMapper;
@@ -38,6 +39,12 @@ public class UserService extends AbstractService<User, Integer>{
             updatedUser.setPassword(passwordEncoder.encode(newPass));
         }
         return super.update(updatedUser,id);
+    }
+
+    public User getByLogin(String login){
+        return ((UserRepository)repository).findByLogin(login).orElseThrow(
+                ()-> new ResourceNotFoundException("User with login = " + login + " not found!")
+        );
     }
 
     private void encodePassword(User user){
