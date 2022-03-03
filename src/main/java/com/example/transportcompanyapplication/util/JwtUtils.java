@@ -20,15 +20,11 @@ import java.util.Date;
 public class JwtUtils {
     @Value("${jwt.token.secret}")
     private String jwtSecret;
-    @Value("${jwt.token.expiration}")
-    private int jwtExpiration;
 
     public String generateJwtToken(Authentication authentication){
         UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
         Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getBytes(StandardCharsets.UTF_8));
         String jwt = JWT.create().withSubject(userPrincipal.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + jwtExpiration))
-                .withIssuer("auth0")
                 .sign(algorithm);
         return jwt;
     }
