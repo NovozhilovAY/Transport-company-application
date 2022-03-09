@@ -25,7 +25,7 @@ public class ExtendedRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> im
     @Override
     public void update(T entity) {
         Session session = (Session)entityManager.getDelegate();
-        session.update(entity);
+        session.merge(entity);
         session.flush();
         session.clear();
     }

@@ -10,6 +10,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("api/history")
+@CrossOrigin(value = "*")
 public class HistoryController {
     private final HistoryService service;
 
@@ -18,12 +19,13 @@ public class HistoryController {
     }
 
     @GetMapping("/date")
-    public Double getKilometrageByDate(@Valid KmByDateRequest request) throws ResourceNotFoundException {
+    public Double getKilometrageByDate(@Valid KmByDateRequest request){
+        KmByDateRequest req = request;
         return service.getKilometrageByDate(request);
     }
 
     @GetMapping("/date-interval")
-    public Double getKilometrageByDateInterval(@Valid KmByDateIntervalRequest request) throws ResourceNotFoundException {
+    public Double getKilometrageByDateInterval(@Valid KmByDateIntervalRequest request){
         return service.getKilometrageByDateInterval(request);
     }
 

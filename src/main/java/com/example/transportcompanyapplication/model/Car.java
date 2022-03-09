@@ -26,10 +26,12 @@ public class Car {
     private String model;
 
     @Column(name = "year", nullable = false)
-    @Min(value = 1900, message = "")
+    @Min(value = 1900, message = "Enter correct year")
+    @NotNull(message = "field 'year' should not be empty!")
     private Integer year;
 
     @Column(name = "kilometrage", nullable = false)
+    @NotNull(message = "field 'kilometrage' should not be empty!")
     @PositiveOrZero(message = "kilometrage must be positive")
     private Double kilometrage;
 
@@ -39,22 +41,24 @@ public class Car {
     private String licensePlate;
 
     @Column(name = "maintenance_freq", nullable = false)
-    @NotNull
+    @NotNull(message = "field 'maintenanceFreq' should not be empty!")
     @Positive(message = "maintenanceFreq must be positive")
     private Double maintenanceFreq;
 
     @Column(name = "km_before_maint", nullable = false)
-    @NotNull
+    @NotNull(message = "field 'kmBeforeMaint' should not be empty!")
     private Double kmBeforeMaint;
 
     @Column(name = "latitude", nullable = false)
     @Min(value = -90, message = "latitude should not be less than -90")
     @Max(value = 90, message = "latitude should not be more than 90")
+    @NotNull(message = "field 'latitude' should not be empty!")
     private Double latitude;
 
     @Column(name = "longitude", nullable = false, precision = 9, scale = 6)
     @Min(value = -180, message = "longitude should not be less than -180")
     @Max(value = 180, message = "longitude should not be more than 180")
+    @NotNull(message = "field 'longitude' should not be empty!")
     private Double longitude;
 
     @OneToOne
