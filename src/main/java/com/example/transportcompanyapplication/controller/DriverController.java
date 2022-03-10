@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/drivers")
+@CrossOrigin(value = "*")
 public class DriverController {
 
     final private DriverService service;
