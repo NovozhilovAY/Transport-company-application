@@ -23,6 +23,11 @@ public class DriverController {
         return service.findAll();
     }
 
+    @GetMapping("/free")
+    public List<Driver> getFreeDrivers(){
+        return service.getFreeDrivers();
+    }
+
     @GetMapping("/{id}")
     public Driver getDriverById(@PathVariable(value = "id") Long id){
         return service.findById(id);

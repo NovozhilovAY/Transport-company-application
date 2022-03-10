@@ -11,8 +11,10 @@ import java.util.Map;
 
 @Service
 public class DriverService extends AbstractService<Driver, Long>{
-
     public DriverService(DriverRepository repository, PatchMapper<Driver> mapper) {
         super(repository,mapper);
+    }
+    public List<Driver> getFreeDrivers(){
+        return ((DriverRepository)repository).getFreeDrivers();
     }
 }
