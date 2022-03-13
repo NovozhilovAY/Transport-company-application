@@ -59,7 +59,7 @@ public class ExceptionsHandler {
     public ResponseEntity<ResponseErrors> handleValidationException(ConstraintViolationException e){
         ResponseErrors errors = new ResponseErrors();
         e.getConstraintViolations().forEach(
-                (constraintViolation -> errors.addError(constraintViolation.getMessage()))
+                (constraintViolation -> errors.addError("Validation error", constraintViolation.getMessage()))
         );
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }

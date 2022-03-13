@@ -1,10 +1,13 @@
 package com.example.transportcompanyapplication.model;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
+@DynamicUpdate
 @Table(name = "users", indexes = {
         @Index(name = "users_login_key", columnList = "login", unique = true)
 })
@@ -14,11 +17,11 @@ public class User {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @NotBlank
+    @NotBlank(message = "field 'login' should not be empty")
     @Column(name = "login", nullable = false)
     private String login;
 
-    @NotBlank
+    @NotBlank(message = "field 'password' should not be empty")
     @Column(name = "password", nullable = false)
     private String password;
 

@@ -1,5 +1,6 @@
 package com.example.transportcompanyapplication.service;
 
+import com.example.transportcompanyapplication.dto.UserWithoutPass;
 import com.example.transportcompanyapplication.exceptions.ResourceNotFoundException;
 import com.example.transportcompanyapplication.model.User;
 import com.example.transportcompanyapplication.repository.UserRepository;
