@@ -1,12 +1,19 @@
 package com.example.transportcompanyapplication.service;
 
-import com.example.transportcompanyapplication.dto.UserWithoutPass;
+
 import com.example.transportcompanyapplication.exceptions.ResourceNotFoundException;
+import com.example.transportcompanyapplication.model.Role;
 import com.example.transportcompanyapplication.model.User;
 import com.example.transportcompanyapplication.repository.UserRepository;
 import com.example.transportcompanyapplication.util.PatchMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+
+import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -30,14 +37,15 @@ public class UserService extends AbstractService<User, Integer>{
     }
 
     @Override
-    public User partialUpdate(User user, Integer id) {
+    public User partialUpdate(Map<String, Object> source, Integer id) {
         User updatedUser = super.findById(id);
         String oldPass = updatedUser.getPassword();
-        String newPass = user.getPassword();
-        mapper.update(user, updatedUser);
-        if(newPass != null &&
-                !passwordEncoder.encode(newPass).equals(oldPass)){
-            updatedUser.setPassword(passwordEncoder.encode(newPass));
+        if(source.containsKey("roles") && source.get("roles") != null){
+            source.put("roles", new ObjectMapper().convertValue(source.get("roles"), new TypeReference<List<Role>>() {}));
+        }
+        mapper.update(source, updatedUser);
+        if(!updatedUser.getPassword().equals(oldPass)){
+            encodePassword(updatedUser);
         }
         return super.update(updatedUser,id);
     }

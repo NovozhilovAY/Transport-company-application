@@ -6,6 +6,7 @@ import com.example.transportcompanyapplication.util.PatchMapper;
 
 
 import java.util.List;
+import java.util.Map;
 
 
 public abstract class AbstractService<T, ID> {
@@ -39,9 +40,9 @@ public abstract class AbstractService<T, ID> {
         return findById(id);
     }
 
-    public T partialUpdate(T entity, ID id){
+    public T partialUpdate(Map<String, Object> source, ID id){
         T updatedEntity = findById(id);
-        mapper.update(entity, updatedEntity);
+        mapper.update(source, updatedEntity);
         return this.update(updatedEntity,id);
     }
 

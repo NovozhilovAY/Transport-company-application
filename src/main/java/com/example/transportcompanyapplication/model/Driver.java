@@ -1,10 +1,13 @@
 package com.example.transportcompanyapplication.model;
 
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
+@DynamicUpdate
 @Table(name = "drivers")
 public class Driver {
     @Id
@@ -24,7 +27,7 @@ public class Driver {
     private String middleName;
 
     @Column(name = "driving_license")
-    @NotEmpty(message = "field should not be empty!")
+    @NotEmpty(message = "field 'drivingLicense' should not be empty!")
     private String drivingLicense;
 
     public Driver() {

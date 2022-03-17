@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/drivers")
@@ -52,7 +53,7 @@ public class DriverController {
     }
 
     @PatchMapping("/{id}")
-    public Driver partialUpdate(@PathVariable Long id,@RequestBody Driver driver){
-        return service.partialUpdate(driver, id);
+    public Driver partialUpdate(@PathVariable Long id,@RequestBody Map<String,Object> source){
+        return service.partialUpdate(source, id);
     }
 }

@@ -7,6 +7,7 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 
 @Component
 public class PatchMapper<T> {
@@ -16,19 +17,42 @@ public class PatchMapper<T> {
         this.validator = validator;
     }
 
-    public void update(T object, T target){
-        Field[] fields = object.getClass().getDeclaredFields();
-        for (Field field : fields){
-            Object fieldValue = null;
-            try {
-                fieldValue = new PropertyDescriptor(field.getName(), object.getClass()).getReadMethod().invoke(object);
-                if(fieldValue!=null){
-                    new PropertyDescriptor(field.getName(),object.getClass()).getWriteMethod().invoke(target, fieldValue);
-                }
-            } catch (IllegalAccessException | InvocationTargetException | IntrospectionException e) {
-                e.printStackTrace();
+    public void update(Map<String, Object> source, T target){
+        Field[] fields = target.getClass().getDeclaredFields();
+        for(Map.Entry<String, Object> entry : source.entrySet()){
+            Field fieldToChange = getFieldByName(entry.getKey(), fields);
+            if(fieldToChange != null){
+                this.setValue(target, fieldToChange, entry.getValue());
             }
         }
         validator.validate(target);
     }
+
+    private Field getFieldByName(String fieldName, Field[] fields){
+        for (Field field:fields){
+            if(field.getName().equals(fieldName)){
+                return field;
+            }
+        }
+        return null;
+    }
+
+    private void setValue(Object target, Field field, Object value){
+        try {
+            if(value == null){
+                new PropertyDescriptor(field.getName(), target.getClass()).getWriteMethod().invoke(target, value);
+            }else {
+                if(field.getType().isAssignableFrom(value.getClass())){
+                    new PropertyDescriptor(field.getName(), target.getClass()).getWriteMethod().invoke(target, value);
+                }
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IntrospectionException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

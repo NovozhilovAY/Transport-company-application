@@ -1,10 +1,13 @@
 package com.example.transportcompanyapplication.model;
 
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Entity
+@DynamicUpdate
 @Table(name = "cars", indexes = {
         @Index(name = "cars_license_plate_key", columnList = "license_plate", unique = true),
         @Index(name = "cars_driver_id_key", columnList = "driver_id", unique = true)

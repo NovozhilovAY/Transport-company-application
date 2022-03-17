@@ -3,12 +3,14 @@ package com.example.transportcompanyapplication.controller;
 import com.example.transportcompanyapplication.dto.UserWithoutPass;
 import com.example.transportcompanyapplication.model.User;
 import com.example.transportcompanyapplication.service.UserService;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/users")
@@ -53,8 +55,8 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    public UserWithoutPass partialUpdate(@PathVariable Integer id, @RequestBody User user){
-        return UserWithoutPass.fromUser(userService.partialUpdate(user, id));
+    public UserWithoutPass partialUpdate(@PathVariable Integer id, @RequestBody Map<String,Object> source){
+        return UserWithoutPass.fromUser(userService.partialUpdate(source, id));
     }
 
 }
