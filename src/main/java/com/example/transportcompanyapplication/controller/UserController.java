@@ -1,15 +1,20 @@
 package com.example.transportcompanyapplication.controller;
 
+import com.example.transportcompanyapplication.dto.UserWithoutPass;
 import com.example.transportcompanyapplication.model.User;
 import com.example.transportcompanyapplication.service.UserService;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/users")
+@CrossOrigin(value = "*")
 public class UserController {
     private final UserService userService;
 
@@ -18,35 +23,40 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers(){
-        return userService.findAll();
+    public List<UserWithoutPass> getAllUsers(){
+        List<UserWithoutPass> usersDto = new ArrayList<>();
+        List<User> users = userService.findAll();
+        for (User user: users){
+            usersDto.add(UserWithoutPass.fromUser(user));
+        }
+        return usersDto;
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Integer id){
-        return userService.findById(id);
+    public UserWithoutPass getUserById(@PathVariable Integer id){
+        return UserWithoutPass.fromUser(userService.findById(id));
     }
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public User saveUser(@RequestBody @Valid User user){
-        return userService.save(user);
+    public UserWithoutPass saveUser(@RequestBody @Valid User user){
+        return UserWithoutPass.fromUser(userService.save(user));
     }
 
     @PutMapping
-    public User updateUser(@RequestBody @Valid User user){
-        return userService.update(user, user.getId());
+    public UserWithoutPass updateUser(@RequestBody @Valid User user){
+        return UserWithoutPass.fromUser(userService.update(user, user.getId()));
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteUserById(Integer id){
+    public void deleteUserById(@PathVariable Integer id){
         userService.deleteById(id);
     }
 
     @PatchMapping("/{id}")
-    public User partialUpdate(@PathVariable Integer id, @RequestBody User user){
-        return userService.partialUpdate(user, id);
+    public UserWithoutPass partialUpdate(@PathVariable Integer id, @RequestBody Map<String,Object> source){
+        return UserWithoutPass.fromUser(userService.partialUpdate(source, id));
     }
 
 }

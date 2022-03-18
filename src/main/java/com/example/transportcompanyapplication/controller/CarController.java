@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/cars")
+@CrossOrigin(value = "*")
 public class CarController {
     private final CarService carService;
 
@@ -57,7 +59,7 @@ public class CarController {
 
 
     @PatchMapping("/{id}")
-    public Car partialUpdate(@PathVariable Long id, @RequestBody Car car){
-        return carService.partialUpdate(car, id);
+    public Car partialUpdate(@PathVariable Long id, @RequestBody Map<String,Object> source){
+        return carService.partialUpdate(source, id);
     }
 }
