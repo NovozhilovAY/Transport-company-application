@@ -25,14 +25,6 @@ public class CarService extends AbstractService<Car, Long>{
         return this.findById(id);
     }
 
-    @Override
-    public Car partialUpdate(Map<String, Object> source, Long id) {
-        if(source.containsKey("driver") && source.get("driver") != null){
-            source.put("driver", new ObjectMapper().convertValue(source.get("driver"), Driver.class));
-        }
-        return super.partialUpdate(source, id);
-    }
-
     public Car doMaintenance(Long id){
         Car car = findById(id);
         car.doMaintenance();

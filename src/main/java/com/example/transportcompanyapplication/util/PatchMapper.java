@@ -1,5 +1,7 @@
 package com.example.transportcompanyapplication.util;
 
+import com.example.transportcompanyapplication.model.Driver;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 
 
@@ -7,6 +9,7 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 import java.util.Map;
 
 @Component
@@ -39,13 +42,7 @@ public class PatchMapper<T> {
 
     private void setValue(Object target, Field field, Object value){
         try {
-            if(value == null){
-                new PropertyDescriptor(field.getName(), target.getClass()).getWriteMethod().invoke(target, value);
-            }else {
-                if(field.getType().isAssignableFrom(value.getClass())){
-                    new PropertyDescriptor(field.getName(), target.getClass()).getWriteMethod().invoke(target, value);
-                }
-            }
+            new PropertyDescriptor(field.getName(), target.getClass()).getWriteMethod().invoke(target, castValue(field, value));
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
@@ -55,4 +52,10 @@ public class PatchMapper<T> {
         }
     }
 
+    private Object castValue(Field field, Object value){
+        if(!(value instanceof Collection) && value != null){
+            return new ObjectMapper().convertValue(value, field.getType());
+        }
+        return value;
+    }
 }

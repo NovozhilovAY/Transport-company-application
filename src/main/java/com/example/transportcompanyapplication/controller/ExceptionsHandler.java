@@ -15,6 +15,7 @@ import javax.validation.ConstraintViolationException;
 @RestControllerAdvice
 public class ExceptionsHandler {
     private final String UNIQUE_VIOLATION_CODE = "23505";
+    private final String FOREIGN_KEY_VIOLATION_CODE = "23503";
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ResponseErrors> handleException(ResourceNotFoundException e) {
@@ -25,11 +26,15 @@ public class ExceptionsHandler {
 
     @ExceptionHandler(PSQLException.class)
     public ResponseEntity<ResponseErrors> handleDBException(PSQLException e){
+        ResponseErrors errors = new ResponseErrors();
         if(UNIQUE_VIOLATION_CODE.equals(e.getSQLState())){
             UniqueFieldException ex = UniqueExceptionMessageParser.parse(e.getMessage());
             return handleConstraintsException(ex);
         }
-        ResponseErrors errors = new ResponseErrors();
+        if (FOREIGN_KEY_VIOLATION_CODE.equals(e.getSQLState())){
+            errors.addError("Foreign key violation!", "The object is referenced in other tables!");
+            return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        }
         errors.addError(e.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
