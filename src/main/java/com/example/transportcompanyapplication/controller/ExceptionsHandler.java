@@ -1,6 +1,7 @@
 package com.example.transportcompanyapplication.controller;
 
 import com.example.transportcompanyapplication.exceptions.*;
+import com.example.transportcompanyapplication.util.ForeignKeyExceptionMessageParser;
 import com.example.transportcompanyapplication.util.UniqueExceptionMessageParser;
 import org.postgresql.util.PSQLException;
 import org.springframework.http.HttpStatus;
@@ -32,8 +33,8 @@ public class ExceptionsHandler {
             return handleConstraintsException(ex);
         }
         if (FOREIGN_KEY_VIOLATION_CODE.equals(e.getSQLState())){
-            errors.addError("Foreign key violation!", "The object is referenced in other tables!");
-            return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+            ForeignKeyException ex = ForeignKeyExceptionMessageParser.parse(e.getMessage());
+            return handleForeignKeyException(ex);
         }
         errors.addError(e.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
@@ -44,6 +45,13 @@ public class ExceptionsHandler {
         ResponseErrors errors = new ResponseErrors();
         String detailsMessage = "Value " + e.getDetails() + " already exists";
         errors.addError(e.getMessage(), detailsMessage);
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ForeignKeyException.class)
+    public ResponseEntity<ResponseErrors> handleForeignKeyException(ForeignKeyException e){
+        ResponseErrors errors = new ResponseErrors();
+        errors.addError(e.getMessage(), e.getDetails());
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
