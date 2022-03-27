@@ -1,6 +1,9 @@
 package com.example.transportcompanyapplication.util;
 
 import com.example.transportcompanyapplication.model.Driver;
+import com.example.transportcompanyapplication.model.Role;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +12,10 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -53,9 +59,18 @@ public class PatchMapper<T> {
     }
 
     private Object castValue(Field field, Object value){
-        if(!(value instanceof Collection) && value != null){
-            return new ObjectMapper().convertValue(value, field.getType());
+        if(value == null){
+            return null;
         }
-        return value;
+        ObjectMapper objectMapper = new ObjectMapper();
+        if(!(value instanceof Collection)){
+            return objectMapper.convertValue(value, field.getType());
+        }else {
+            ParameterizedType type = (ParameterizedType)field.getGenericType();
+            Class<?> genericClazz = (Class<?>)type.getActualTypeArguments()[0];
+            JavaType collectionType = objectMapper.getTypeFactory()
+                    .constructCollectionType((Class<? extends Collection>) field.getType(), genericClazz);
+            return objectMapper.convertValue(value, collectionType);
+        }
     }
 }

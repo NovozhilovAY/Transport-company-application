@@ -49,9 +49,7 @@ public class UserService extends AbstractService<User, Integer>{
         User oldUser = super.findById(id);
         User updatedUser = new User(oldUser);
         String oldPass = oldUser.getPassword();
-        if(source.containsKey("roles") && source.get("roles") != null){
-            source.put("roles", new ObjectMapper().convertValue(source.get("roles"), new TypeReference<List<Role>>() {}));
-        }
+
         mapper.update(source, updatedUser);
 
         userLogicChecker.checkDeletionOfRoleAdminByHimself(oldUser, updatedUser);
