@@ -17,6 +17,14 @@ public class Role {
     @Column(name = "name", nullable = false)
     private String name;
 
+    public Role() {
+    }
+
+    public Role(Role role){
+        this.id = role.getId();
+        this.name = role.getName();
+    }
+
     public String getName() {
         return name;
     }
@@ -32,4 +40,6 @@ public class Role {
     public void setId(Integer id) {
         this.id = id;
     }
+
+
 }

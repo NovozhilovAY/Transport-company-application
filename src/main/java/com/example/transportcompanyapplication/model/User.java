@@ -4,6 +4,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,6 +32,20 @@ public class User {
     inverseJoinColumns = @JoinColumn(name = "role_id"))
 
     private List<Role> roles;
+
+    public User() {
+    }
+
+    public User(User user) {
+        this.id = user.getId();
+        this.login = user.getLogin();
+        this.password = user.getPassword();
+        ArrayList<Role> roles = new ArrayList<>();
+        for (Role role:user.getRoles()){
+            roles.add(new Role(role));
+        }
+        this.roles = roles;
+    }
 
     public List<Role> getRoles() {
         return roles;
@@ -62,5 +77,14 @@ public class User {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public boolean isAdmin(){
+        for (Role role:roles){
+            if("ROLE_ADMIN".equals(role.getName())){
+                return true;
+            }
+        }
+        return false;
     }
 }

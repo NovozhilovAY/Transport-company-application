@@ -76,4 +76,11 @@ public class ExceptionsHandler {
         );
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(AdminLogicException.class)
+    public ResponseEntity<ResponseErrors> handleLastAdminException(AdminLogicException e){
+        ResponseErrors errors = new ResponseErrors();
+        errors.addError("AdminLogicException", e.getMessage());
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
 }
