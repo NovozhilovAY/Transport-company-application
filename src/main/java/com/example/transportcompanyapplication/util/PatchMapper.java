@@ -1,30 +1,18 @@
 package com.example.transportcompanyapplication.util;
 
-import com.example.transportcompanyapplication.model.Driver;
-import com.example.transportcompanyapplication.model.Role;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
-
-
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 @Component
 public class PatchMapper<T> {
-    private final EntityValidator<T> validator;
-
-    public PatchMapper(EntityValidator<T> validator) {
-        this.validator = validator;
-    }
 
     public void update(Map<String, Object> source, T target){
         Field[] fields = target.getClass().getDeclaredFields();
@@ -34,7 +22,6 @@ public class PatchMapper<T> {
                 this.setValue(target, fieldToChange, entry.getValue());
             }
         }
-        validator.validate(target);
     }
 
     private Field getFieldByName(String fieldName, Field[] fields){
