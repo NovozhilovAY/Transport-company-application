@@ -1,6 +1,7 @@
 package com.example.transportcompanyapplication.controller;
 
 import com.example.transportcompanyapplication.exceptions.*;
+import com.example.transportcompanyapplication.util.ForeignKeyExceptionMessageParser;
 import com.example.transportcompanyapplication.util.UniqueExceptionMessageParser;
 import org.postgresql.util.PSQLException;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import javax.validation.ConstraintViolationException;
 @RestControllerAdvice
 public class ExceptionsHandler {
     private final String UNIQUE_VIOLATION_CODE = "23505";
+    private final String FOREIGN_KEY_VIOLATION_CODE = "23503";
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ResponseErrors> handleException(ResourceNotFoundException e) {
@@ -25,11 +27,15 @@ public class ExceptionsHandler {
 
     @ExceptionHandler(PSQLException.class)
     public ResponseEntity<ResponseErrors> handleDBException(PSQLException e){
+        ResponseErrors errors = new ResponseErrors();
         if(UNIQUE_VIOLATION_CODE.equals(e.getSQLState())){
             UniqueFieldException ex = UniqueExceptionMessageParser.parse(e.getMessage());
             return handleConstraintsException(ex);
         }
-        ResponseErrors errors = new ResponseErrors();
+        if (FOREIGN_KEY_VIOLATION_CODE.equals(e.getSQLState())){
+            ForeignKeyException ex = ForeignKeyExceptionMessageParser.parse(e.getMessage());
+            return handleForeignKeyException(ex);
+        }
         errors.addError(e.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
@@ -39,6 +45,13 @@ public class ExceptionsHandler {
         ResponseErrors errors = new ResponseErrors();
         String detailsMessage = "Value " + e.getDetails() + " already exists";
         errors.addError(e.getMessage(), detailsMessage);
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ForeignKeyException.class)
+    public ResponseEntity<ResponseErrors> handleForeignKeyException(ForeignKeyException e){
+        ResponseErrors errors = new ResponseErrors();
+        errors.addError(e.getMessage(), e.getDetails());
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
@@ -61,6 +74,13 @@ public class ExceptionsHandler {
         e.getConstraintViolations().forEach(
                 (constraintViolation -> errors.addError("Validation error", constraintViolation.getMessage()))
         );
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AdminLogicException.class)
+    public ResponseEntity<ResponseErrors> handleLastAdminException(AdminLogicException e){
+        ResponseErrors errors = new ResponseErrors();
+        errors.addError("AdminLogicException", e.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 }

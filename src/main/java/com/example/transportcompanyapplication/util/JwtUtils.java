@@ -6,12 +6,9 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-
-import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -21,12 +18,25 @@ public class JwtUtils {
     @Value("${jwt.token.secret}")
     private String jwtSecret;
 
-    public String generateJwtToken(Authentication authentication){
-        UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
+    @Value("${jwt.token.lifeTime}")
+    private Long tokenLifeTime;
+
+    @Value("${jwt.refresh.lifeTime}")
+    private Long refreshLifeTime;
+
+    public String generateJwtToken(UserDetails userDetails){
+        return generateJwt(userDetails, tokenLifeTime);
+    }
+
+    public String generateRefreshToken(UserDetails userDetails){
+        return generateJwt(userDetails, refreshLifeTime);
+    }
+
+    private String generateJwt(UserDetails userDetails, Long lifeTime){
         Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getBytes(StandardCharsets.UTF_8));
-        String jwt = JWT.create().withSubject(userPrincipal.getUsername())
+        Date expireTime = new Date(System.currentTimeMillis() + lifeTime);
+        return JWT.create().withSubject(userDetails.getUsername()).withExpiresAt(expireTime)
                 .sign(algorithm);
-        return jwt;
     }
 
     public boolean validateJwtToken(String jwt){
@@ -37,8 +47,8 @@ public class JwtUtils {
             return true;
         }catch (JWTVerificationException exception){
             exception.printStackTrace();
+            return false;
         }
-        return false;
     }
 
 
