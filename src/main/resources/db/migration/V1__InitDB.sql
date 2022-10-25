@@ -17,8 +17,17 @@ alter table drivers
     owner to postgres;
 --------------------------------------------------------------------
 
+create table if not exists correcting_data (
+    id serial constraint correcting_data_pkey primary key,
+    city_type varchar not null,
+    climate_type varchar not null,
+    relief_type varchar not null,
+    road_type varchar not null
+);
+alter table correcting_data
+    owner to postgres;
 
-
+INSERT INTO correcting_data VALUES (1, 'SMALL', 'TEMPERATE', 'R1', 'D1');
 
 --Table cars
 --------------------------------------------------------------------

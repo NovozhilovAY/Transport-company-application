@@ -179,4 +179,8 @@ public class Car {
     public void doMaintenance(){
         this.kmBeforeMaint = this.maintenanceFreq;
     }
+
+    public void correctKilometrage(Double K1TO, Double K3TO, Double K1KR, Double K3KR) {
+
+    }
 }

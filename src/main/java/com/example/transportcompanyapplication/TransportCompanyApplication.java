@@ -1,12 +1,14 @@
 package com.example.transportcompanyapplication;
 
+import com.example.transportcompanyapplication.security.SecurityConfig;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 @EnableScheduling
 @OpenAPIDefinition(info = @Info(title = "Transport company application", version = "1.0"))
 public class TransportCompanyApplication {
