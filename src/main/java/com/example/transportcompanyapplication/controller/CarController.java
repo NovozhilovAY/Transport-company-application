@@ -1,6 +1,7 @@
 package com.example.transportcompanyapplication.controller;
 
 import com.example.transportcompanyapplication.dto.NewCoordinatesOfCar;
+import com.example.transportcompanyapplication.dto.NextMaintDates;
 import com.example.transportcompanyapplication.model.Car;
 import com.example.transportcompanyapplication.service.CarService;
 import org.springframework.http.HttpStatus;
@@ -44,9 +45,19 @@ public class CarController {
         return carService.updateCoordinates(id, newCoordinates);
     }
 
-    @PatchMapping("/maintenance/{id}")
-    public Car doMaintenance(@PathVariable Long id){
-        return carService.doMaintenance(id);
+    @PatchMapping("/to-1/{id}")
+    public Car doTo1(@PathVariable Long id){
+        return carService.doTo1(id);
+    }
+
+    @PatchMapping("/to-2/{id}")
+    public Car doTo2(@PathVariable Long id){
+        return carService.doTo2(id);
+    }
+
+    @PatchMapping("/kr/{id}")
+    public Car doKr(@PathVariable Long id){
+        return carService.doKr(id);
     }
 
     @DeleteMapping("/{id}")
@@ -59,5 +70,15 @@ public class CarController {
     @PatchMapping("/{id}")
     public Car partialUpdate(@PathVariable Long id, @RequestBody Car car){
         return carService.partialUpdate(car, id);
+    }
+
+    @GetMapping("/update-avg-km")
+    public void updateAvgKm() {
+        carService.updateAvgKilometrage();
+    }
+
+    @GetMapping("/report/next-maint-dates/{id}")
+    public NextMaintDates getMaintDates(@PathVariable Long id) {
+        return  carService.getNextMaintDates(id);
     }
 }

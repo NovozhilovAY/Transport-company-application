@@ -1,6 +1,8 @@
 package com.example.transportcompanyapplication.model;
 
 
+import com.example.transportcompanyapplication.dto.NextMaintDates;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -38,14 +40,42 @@ public class Car {
     @NotBlank(message = "field 'licensePlate' should not be empty!")
     private String licensePlate;
 
-    @Column(name = "maintenance_freq", nullable = false)
+    @Column(name = "normative_to1")
     @NotNull
-    @Positive(message = "maintenanceFreq must be positive")
-    private Double maintenanceFreq;
+    @Positive(message = "normativeTo1 must be positive")
+    private Double normativeTo1;
 
-    @Column(name = "km_before_maint", nullable = false)
+    @Column(name = "normative_to2")
     @NotNull
-    private Double kmBeforeMaint;
+    @Positive(message = "normativeTo2 must be positive")
+    private Double normativeTo2;
+
+    @Column(name = "normative_kr")
+    @NotNull
+    @Positive(message = "normativeTo2 must be positive")
+    private Double normativeKr;
+
+
+    @Column(name = "fact_to1")
+    private Double factTo1;
+
+    @Column(name = "fact_to2")
+    private Double factTo2;
+
+    @Column(name = "fact_kr")
+    private Double factKr;
+
+    @Column(name = "km_before_to1", nullable = false)
+    @NotNull
+    private Double kmBeforeTo1;
+
+    @Column(name = "km_before_to2", nullable = false)
+    @NotNull
+    private Double kmBeforeTo2;
+
+    @Column(name = "km_before_kr", nullable = false)
+    @NotNull
+    private Double kmBeforeKr;
 
     @Column(name = "latitude", nullable = false)
     @Min(value = -90, message = "latitude should not be less than -90")
@@ -61,111 +91,57 @@ public class Car {
     @JoinColumn(name = "driver_id")
     private Driver driver;
 
+    @Column(name = "avg_kilometrage")
+    private Double avgKilometrage;
+
+    public Car() {
+    }
+
     public Car(Long id,
                String brand,
                String model,
                Integer year,
                Double kilometrage,
                String licensePlate,
-               Double maintenanceFreq,
-               Double kmBeforeMaint,
+               Double normativeTo1,
+               Double normativeTo2,
+               Double normativeKr,
+               Double factTo1,
+               Double factTo2,
+               Double factKr,
+               Double kmBeforeTo1,
+               Double kmBeforeTo2,
+               Double kmBeforeKr,
                Double latitude,
                Double longitude,
-               Driver driver) {
+               Driver driver, Double avgKilometrage) {
         this.id = id;
         this.brand = brand;
         this.model = model;
         this.year = year;
         this.kilometrage = kilometrage;
         this.licensePlate = licensePlate;
-        this.maintenanceFreq = maintenanceFreq;
-        this.kmBeforeMaint = kmBeforeMaint;
+        this.normativeTo1 = normativeTo1;
+        this.normativeTo2 = normativeTo2;
+        this.normativeKr = normativeKr;
+        this.factTo1 = factTo1;
+        this.factTo2 = factTo2;
+        this.factKr = factKr;
+        this.kmBeforeTo1 = kmBeforeTo1;
+        this.kmBeforeTo2 = kmBeforeTo2;
+        this.kmBeforeKr = kmBeforeKr;
         this.latitude = latitude;
         this.longitude = longitude;
         this.driver = driver;
+        this.avgKilometrage = avgKilometrage;
     }
 
-    public Car() {
+    public Double getAvgKilometrage() {
+        return avgKilometrage;
     }
 
-    public Driver getDriver() {
-        return driver;
-    }
-
-    public void setDriver(Driver driver) {
-        this.driver = driver;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getKmBeforeMaint() {
-        return kmBeforeMaint;
-    }
-
-    public void setKmBeforeMaint(Double kmBeforeMaint) {
-        this.kmBeforeMaint = kmBeforeMaint;
-    }
-
-    public Double getMaintenanceFreq() {
-        return maintenanceFreq;
-    }
-
-    public void setMaintenanceFreq(Double maintenanceFreq) {
-        this.maintenanceFreq = maintenanceFreq;
-    }
-
-    public String getLicensePlate() {
-        return licensePlate;
-    }
-
-    public void setLicensePlate(String licensePlate) {
-        this.licensePlate = licensePlate;
-    }
-
-    public Double getKilometrage() {
-        return kilometrage;
-    }
-
-    public void setKilometrage(Double kilometrage) {
-        this.kilometrage = kilometrage;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
+    public void setAvgKilometrage(Double avgKilometrage) {
+        this.avgKilometrage = avgKilometrage;
     }
 
     public Long getId() {
@@ -176,11 +152,156 @@ public class Car {
         this.id = id;
     }
 
-    public void doMaintenance(){
-        this.kmBeforeMaint = this.maintenanceFreq;
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public Double getKilometrage() {
+        return kilometrage;
+    }
+
+    public void setKilometrage(Double kilometrage) {
+        this.kilometrage = kilometrage;
+    }
+
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
+    }
+
+    public Double getNormativeTo1() {
+        return normativeTo1;
+    }
+
+    public void setNormativeTo1(Double normativeTo1) {
+        this.normativeTo1 = normativeTo1;
+    }
+
+    public Double getNormativeTo2() {
+        return normativeTo2;
+    }
+
+    public void setNormativeTo2(Double normativeTo2) {
+        this.normativeTo2 = normativeTo2;
+    }
+
+    public Double getNormativeKr() {
+        return normativeKr;
+    }
+
+    public void setNormativeKr(Double normativeKr) {
+        this.normativeKr = normativeKr;
+    }
+
+    public Double getFactTo1() {
+        return factTo1;
+    }
+
+    public void setFactTo1(Double factTo1) {
+        this.factTo1 = factTo1;
+    }
+
+    public Double getFactTo2() {
+        return factTo2;
+    }
+
+    public void setFactTo2(Double factTo2) {
+        this.factTo2 = factTo2;
+    }
+
+    public Double getFactKr() {
+        return factKr;
+    }
+
+    public void setFactKr(Double factKr) {
+        this.factKr = factKr;
+    }
+
+    public Double getKmBeforeTo1() {
+        return kmBeforeTo1;
+    }
+
+    public void setKmBeforeTo1(Double kmBeforeTo1) {
+        this.kmBeforeTo1 = kmBeforeTo1;
+    }
+
+    public Double getKmBeforeTo2() {
+        return kmBeforeTo2;
+    }
+
+    public void setKmBeforeTo2(Double kmBeforeTo2) {
+        this.kmBeforeTo2 = kmBeforeTo2;
+    }
+
+    public Double getKmBeforeKr() {
+        return kmBeforeKr;
+    }
+
+    public void setKmBeforeKr(Double kmBeforeKr) {
+        this.kmBeforeKr = kmBeforeKr;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
+    }
+
+    public void doTo1(){
+        this.kmBeforeTo1 = this.factTo1;
+    }
+
+    public void doTo2(){
+        this.kmBeforeTo2 = this.factTo2;
+    }
+    public void doKr(){
+        this.kmBeforeKr = this.factKr;
     }
 
     public void correctKilometrage(Double K1TO, Double K3TO, Double K1KR, Double K3KR) {
-
+        this.factTo1 = this.normativeTo1 * K1TO * K3TO;
+        this.factTo2 = this.normativeTo2 * K1TO * K3TO;
+        this.factKr = this.normativeKr * K1KR * K3KR;
     }
 }

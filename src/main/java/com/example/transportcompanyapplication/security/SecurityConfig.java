@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -25,8 +26,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .authorizeRequests()
-                    .antMatchers("/api/drivers/**").hasAnyRole("ADMIN", "DISPATCHER")
+                .authorizeRequests().anyRequest().permitAll();
+               /*     .antMatchers("/api/drivers/**").hasAnyRole("ADMIN", "DISPATCHER")
                     .antMatchers("/api/history/**").hasAnyRole("ADMIN", "DISPATCHER")
                     .antMatchers("/api/roles/**").hasAnyRole("ADMIN", "DISPATCHER")
                     .antMatchers("/api/users/**").hasRole("ADMIN")
@@ -34,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/api/cars/**").hasAnyRole("ADMIN", "DISPATCHER")
                     .anyRequest().authenticated()
                 .and()
-                    .formLogin().permitAll();
+                    .formLogin().permitAll();*/
     }
 
     @Override

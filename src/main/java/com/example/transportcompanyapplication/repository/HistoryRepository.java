@@ -20,4 +20,10 @@ public interface HistoryRepository extends JpaRepository<HistoryRecord, Long> {
 
     @Query(value = "SELECT coalesce(SUM(kilometrage),0) FROM history WHERE car_id = ?1 AND h_date = ?2", nativeQuery = true)
     Double getKmByDate(Long carId, Date date);
+
+    @Query(value = "SELECT COUNT(*) FROM history WHERE car_id = ?1", nativeQuery = true)
+    Integer getNumOfDays(Long carId);
+
+    @Query(value = "SELECT SUM(kilometrage) FROM history WHERE car_id = ?1", nativeQuery = true)
+    Double getAllKilometrage(Long carId);
 }
