@@ -1,3 +1,20 @@
+--Table financial_report_data
+--------------------------------------------------------------------
+create table financial_report_data
+(
+    id               serial
+        constraint drivers_pkey
+            primary key,
+    num_working_days integer not null,
+    to1_cost         integer not null,
+    to2_cost         integer not null,
+    kr_cost          integer not null
+);
+
+alter table financial_report_data
+    owner to postgres;
+--------------------------------------------------------------------
+
 --Table drivers
 --------------------------------------------------------------------
 create table drivers
@@ -43,10 +60,18 @@ create table cars
     license_plate    varchar        not null
         constraint cars_license_plate_key
             unique,
-    maintenance_freq numeric(5)     not null,
-    km_before_maint  numeric(8, 3)  not null,
+    normative_to1    numeric(5)     not null,
+    normative_to2    numeric(5)     not null,
+    normative_kr    numeric(8)     not null,
+    fact_to1    numeric(8, 3)     not null,
+    fact_to2    numeric(8, 3)     not null,
+    fact_kr    numeric(11, 3)     not null,
+    km_before_to1 numeric(8, 3)     not null,
+    km_before_to2 numeric(8, 3)     not null,
+    km_before_kr       numeric(11, 3)     not null,
     latitude         numeric(9, 6)  not null,
     longitude        numeric(9, 6)  not null,
+    avg_kilometrage numeric(8, 3),
     driver_id        integer
         constraint cars_driver_id_key
             unique
@@ -259,7 +284,9 @@ BEGIN
 
     UPDATE cars SET
                     kilometrage = OLD.kilometrage + distance,
-                    km_before_maint = OLD.km_before_maint - distance
+                    km_before_to1 = OLD.km_before_to1 - distance,
+                    km_before_to2 = OLD.km_before_to2 - distance,
+                    km_before_kr = OLD.km_before_kr - distance
     WHERE id = OLD.id;
 
     RETURN NEW;
@@ -285,3 +312,5 @@ INSERT INTO user_roles(user_id, role_id) VALUES (2,3);
 
 INSERT INTO users(login, password) VALUES ('dispatcher', '$2a$10$6e60Gr./BAImN4zwKmzp8ujAezYlfTxq0X3zeRSIurN4Cg.zKN0vq');
 INSERT INTO user_roles(user_id, role_id) VALUES (3,2);
+
+INSERT INTO financial_report_data(num_working_days, to1_cost, to2_cost, kr_cost) VALUES (365, 10000, 20000, 150000);
