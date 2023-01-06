@@ -33,7 +33,15 @@ public class CarServiceImpl extends AbstractServiceImpl<Car, Long> implements Ca
     public Car save(Car car) {
         correctCarKilometrage(car);
         car.setDefaultKmBefore();
+        car.setAvgKilometrage(getDefaultAvgKilometrage());
         return super.save(car);
+    }
+
+    private Double getDefaultAvgKilometrage() {
+        return repository.findAll().stream()
+                .mapToDouble(Car::getAvgKilometrage)
+                .summaryStatistics()
+                .getAverage();
     }
 
     public Car updateCoordinates(Long id, NewCoordinatesOfCar newCoordinates) {
