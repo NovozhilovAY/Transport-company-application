@@ -1,9 +1,8 @@
 package com.example.transportcompanyapplication.controller;
 
 import com.example.transportcompanyapplication.dto.NewCoordinatesOfCar;
-import com.example.transportcompanyapplication.dto.NextMaintDates;
 import com.example.transportcompanyapplication.model.Car;
-import com.example.transportcompanyapplication.service.CarService;
+import com.example.transportcompanyapplication.service.api.CarService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

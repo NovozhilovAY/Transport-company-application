@@ -1,7 +1,7 @@
 package com.example.transportcompanyapplication.controller;
 
 import com.example.transportcompanyapplication.model.Driver;
-import com.example.transportcompanyapplication.service.DriverService;
+import com.example.transportcompanyapplication.service.api.DriverService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

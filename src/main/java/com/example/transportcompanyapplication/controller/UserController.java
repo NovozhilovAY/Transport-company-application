@@ -1,7 +1,7 @@
 package com.example.transportcompanyapplication.controller;
 
 import com.example.transportcompanyapplication.model.User;
-import com.example.transportcompanyapplication.service.UserService;
+import com.example.transportcompanyapplication.service.api.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

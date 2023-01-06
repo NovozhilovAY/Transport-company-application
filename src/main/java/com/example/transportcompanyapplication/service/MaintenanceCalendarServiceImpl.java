@@ -5,6 +5,7 @@ import com.example.transportcompanyapplication.dto.CarYearMaintCalendar;
 import com.example.transportcompanyapplication.dto.CarsYearMaintCalendar;
 import com.example.transportcompanyapplication.dto.NextMaintDates;
 import com.example.transportcompanyapplication.model.Car;
+import com.example.transportcompanyapplication.service.api.MaintenanceCalendarService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -13,13 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class MaintenanceCalendarService {
+public class MaintenanceCalendarServiceImpl implements MaintenanceCalendarService {
 
-    private final CarService carService;
+    private final CarServiceImpl carService;
 
-    private final FinancialReportService financialReportService;
+    private final FinancialReportServiceImpl financialReportService;
 
-    public MaintenanceCalendarService(CarService carService, FinancialReportService financialReportService) {
+    public MaintenanceCalendarServiceImpl(CarServiceImpl carService, FinancialReportServiceImpl financialReportService) {
         this.carService = carService;
         this.financialReportService = financialReportService;
     }

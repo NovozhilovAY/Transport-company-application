@@ -7,6 +7,7 @@ import com.example.transportcompanyapplication.model.Car;
 import com.example.transportcompanyapplication.model.FinancialReportData;
 import com.example.transportcompanyapplication.repository.CarRepository;
 import com.example.transportcompanyapplication.repository.FinancialReportRepository;
+import com.example.transportcompanyapplication.service.api.FinancialReportService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,27 +15,30 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class FinancialReportService {
+public class FinancialReportServiceImpl implements FinancialReportService {
     private final FinancialReportRepository repository;
 
     private final CarRepository carRepository;
 
-    public FinancialReportService(FinancialReportRepository repository, CarRepository carRepository) {
+    public FinancialReportServiceImpl(FinancialReportRepository repository, CarRepository carRepository) {
         this.repository = repository;
         this.carRepository = carRepository;
     }
 
+    @Override
     public FinancialReportData getFinancialReportData() {
         return repository.findById(1L).orElseThrow(
                 () -> new ResourceNotFoundException("Не удалось получить доступ к данным финансового отчета!")
         );
     }
 
+    @Override
     public FinancialReportData updateReportData(FinancialReportData financialReportData) {
         repository.update(financialReportData);
         return getFinancialReportData();
     }
 
+    @Override
     public FinancialReport getFinancialReport() {
         List<Car> allCars = carRepository.findAll();
         FinancialReport financialReport = new FinancialReport();

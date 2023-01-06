@@ -1,7 +1,7 @@
 package com.example.transportcompanyapplication.controller;
 
 import com.example.transportcompanyapplication.model.Role;
-import com.example.transportcompanyapplication.service.RoleService;
+import com.example.transportcompanyapplication.service.api.RoleService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -2,7 +2,7 @@ package com.example.transportcompanyapplication.controller;
 
 import com.example.transportcompanyapplication.dto.CarsYearMaintCalendar;
 import com.example.transportcompanyapplication.dto.NextMaintDates;
-import com.example.transportcompanyapplication.service.MaintenanceCalendarService;
+import com.example.transportcompanyapplication.service.api.MaintenanceCalendarService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

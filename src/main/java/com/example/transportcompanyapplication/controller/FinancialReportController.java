@@ -2,7 +2,7 @@ package com.example.transportcompanyapplication.controller;
 
 import com.example.transportcompanyapplication.dto.FinancialReport;
 import com.example.transportcompanyapplication.model.FinancialReportData;
-import com.example.transportcompanyapplication.service.FinancialReportService;
+import com.example.transportcompanyapplication.service.api.FinancialReportService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

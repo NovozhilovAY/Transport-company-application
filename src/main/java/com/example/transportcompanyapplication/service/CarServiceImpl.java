@@ -11,18 +11,19 @@ import com.example.transportcompanyapplication.model.CorrectingData;
 import com.example.transportcompanyapplication.repository.CarRepository;
 import com.example.transportcompanyapplication.repository.CorrectingRepository;
 import com.example.transportcompanyapplication.repository.HistoryRepository;
+import com.example.transportcompanyapplication.service.api.CarService;
 import com.example.transportcompanyapplication.util.PatchMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class CarService extends AbstractService<Car, Long> {
+public class CarServiceImpl extends AbstractServiceImpl<Car, Long> implements CarService {
 
     private CorrectingRepository correctingRepository;
     private HistoryRepository historyRepository;
 
-    public CarService(CarRepository repository, PatchMapper<Car> mapper, CorrectingRepository correctingRepository, HistoryRepository historyRepository) {
+    public CarServiceImpl(CarRepository repository, PatchMapper<Car> mapper, CorrectingRepository correctingRepository, HistoryRepository historyRepository) {
         super(repository,mapper);
         this.correctingRepository = correctingRepository;
         this.historyRepository = historyRepository;
@@ -61,18 +62,6 @@ public class CarService extends AbstractService<Car, Long> {
         return save(car);
     }
 
-    public CorrectingData getCorrectingData() {
-        return correctingRepository.findById(1L).orElseThrow(
-                () -> new ResourceNotFoundException("Не удалось получить доступ к данным коррекции пробега!")
-        );
-    }
-
-    public CorrectingData updateCorrectingData(CorrectingData correctingData) {
-        correctingRepository.update(correctingData);
-        correctAllCarKilometrage();
-        return getCorrectingData();
-    }
-
     public void correctCarKilometrage(Long id) {
         Car carToCorrect = repository.getById(id);
         correctCarKilometrage(carToCorrect);
@@ -94,7 +83,7 @@ public class CarService extends AbstractService<Car, Long> {
         }
     }
 
-    public void updateAvgKilometrage(Car car) {
+    private void updateAvgKilometrage(Car car) {
         Integer numOfDays = historyRepository.getNumOfDays(car.getId());
         Double allKilometrage = historyRepository.getAllKilometrage(car.getId());
         if (numOfDays.equals(0)) {
@@ -105,7 +94,8 @@ public class CarService extends AbstractService<Car, Long> {
     }
 
     private void correctCarKilometrage(Car car) {
-        CorrectingData correctingData = getCorrectingData();
+        CorrectingData correctingData = correctingRepository.findById(1L).orElseThrow(
+                ()-> new ResourceNotFoundException("Не удалось получить доступ к данным коррекции пробега!"));
         CategoryOfExploitationType categoryOfExploitationType = CategoryOfExploitation.getCategoryOfExploitation(correctingData.getReliefType(),
                 correctingData.getRoadType(), correctingData.getCityType());
         Double K1TO = CoeffK1.getCoeffK1TO(categoryOfExploitationType);

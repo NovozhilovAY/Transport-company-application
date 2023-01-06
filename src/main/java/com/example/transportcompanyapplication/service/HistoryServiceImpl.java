@@ -5,6 +5,7 @@ import com.example.transportcompanyapplication.dto.KmByDateRequest;
 import com.example.transportcompanyapplication.exceptions.ResourceNotFoundException;
 import com.example.transportcompanyapplication.repository.CarRepository;
 import com.example.transportcompanyapplication.repository.HistoryRepository;
+import com.example.transportcompanyapplication.service.api.HistoryService;
 import com.example.transportcompanyapplication.util.DateComparator;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -12,15 +13,16 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 
 @Service
-public class HistoryService {
+public class HistoryServiceImpl implements HistoryService {
     private final HistoryRepository historyRepository;
     private final CarRepository carRepository;
 
-    public HistoryService(HistoryRepository historyRepository, CarRepository carRepository) {
+    public HistoryServiceImpl(HistoryRepository historyRepository, CarRepository carRepository) {
         this.historyRepository = historyRepository;
         this.carRepository = carRepository;
     }
 
+    @Override
     public Double getKilometrageByDate(KmByDateRequest request){
         this.checkCarId(request.getCarId());
         Date currentDate = new Date(System.currentTimeMillis());
@@ -31,6 +33,7 @@ public class HistoryService {
         }
     }
 
+    @Override
     public Double getKilometrageByDateInterval(KmByDateIntervalRequest request){
         this.checkCarId(request.getCarId());
         Date currentDate = new Date(System.currentTimeMillis());

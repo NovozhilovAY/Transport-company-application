@@ -3,7 +3,7 @@ package com.example.transportcompanyapplication.controller;
 import com.example.transportcompanyapplication.dto.KmByDateIntervalRequest;
 import com.example.transportcompanyapplication.dto.KmByDateRequest;
 import com.example.transportcompanyapplication.exceptions.ResourceNotFoundException;
-import com.example.transportcompanyapplication.service.HistoryService;
+import com.example.transportcompanyapplication.service.api.HistoryService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

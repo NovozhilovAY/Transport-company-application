@@ -2,15 +2,17 @@ package com.example.transportcompanyapplication.service;
 
 import com.example.transportcompanyapplication.model.User;
 import com.example.transportcompanyapplication.repository.UserRepository;
+import com.example.transportcompanyapplication.service.api.UserService;
 import com.example.transportcompanyapplication.util.PatchMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 @Service
-public class UserService extends AbstractService<User, Integer>{
+public class UserServiceImpl extends AbstractServiceImpl<User, Integer> implements UserService{
     private final PasswordEncoder passwordEncoder;
-    public UserService(UserRepository userRepository, PatchMapper<User> mapper, PasswordEncoder passwordEncoder) {
+
+    public UserServiceImpl(UserRepository userRepository, PatchMapper<User> mapper, PasswordEncoder passwordEncoder) {
         super(userRepository, mapper);
         this.passwordEncoder = passwordEncoder;
     }

@@ -1,18 +1,15 @@
 package com.example.transportcompanyapplication.service;
 
-import com.example.transportcompanyapplication.exceptions.ResourceNotFoundException;
 import com.example.transportcompanyapplication.model.Driver;
 import com.example.transportcompanyapplication.repository.DriverRepository;
+import com.example.transportcompanyapplication.service.api.DriverService;
 import com.example.transportcompanyapplication.util.PatchMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-
 @Service
-public class DriverService extends AbstractService<Driver, Long>{
+public class DriverServiceImpl extends AbstractServiceImpl<Driver, Long> implements DriverService {
 
-    public DriverService(DriverRepository repository, PatchMapper<Driver> mapper) {
+    public DriverServiceImpl(DriverRepository repository, PatchMapper<Driver> mapper) {
         super(repository,mapper);
     }
 }
