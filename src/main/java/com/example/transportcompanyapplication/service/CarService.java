@@ -15,11 +15,8 @@ import com.example.transportcompanyapplication.repository.HistoryRepository;
 import com.example.transportcompanyapplication.util.PatchMapper;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -37,6 +34,7 @@ public class CarService extends AbstractService<Car, Long> {
     @Override
     public Car save(Car car) {
         correctCarKilometrage(car);
+        car.setDefaultKmBefore();
         return super.save(car);
     }
 

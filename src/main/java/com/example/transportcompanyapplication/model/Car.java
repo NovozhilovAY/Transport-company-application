@@ -304,4 +304,10 @@ public class Car {
         this.factTo2 = this.normativeTo2 * K1TO * K3TO;
         this.factKr = this.normativeKr * K1KR * K3KR;
     }
+
+    public void setDefaultKmBefore() {
+        this.kmBeforeTo1 = this.factTo1;
+        this.kmBeforeTo2 = this.factTo2;
+        this.kmBeforeKr = this.factKr;
+    }
 }

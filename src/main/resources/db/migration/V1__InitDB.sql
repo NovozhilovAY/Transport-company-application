@@ -3,7 +3,7 @@
 create table financial_report_data
 (
     id               serial
-        constraint drivers_pkey
+        constraint financial_report_data_pkey
             primary key,
     num_working_days integer not null,
     to1_cost         integer not null,
