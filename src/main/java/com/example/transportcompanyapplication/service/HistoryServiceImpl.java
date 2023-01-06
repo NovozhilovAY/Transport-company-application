@@ -45,11 +45,6 @@ public class HistoryServiceImpl implements HistoryService {
         }
     }
 
-    @Scheduled(cron = "0 0 0 * * *")
-    private void clearLog(){
-        historyRepository.clearLog();
-    }
-
     private void checkCarId(Long carId){
         carRepository.findById(carId).orElseThrow(
                 ()->new ResourceNotFoundException("Car with id = " + carId + " not found!")
