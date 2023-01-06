@@ -92,6 +92,7 @@ public class FinancialReportService {
                 .reduce(Double::sum)
                 .orElse(0.0);
 
+        Integer totalCosts = totalCostTo1 + totalCostTo2 + totalCostKr;
         financialReport.setTotalNumOfTo1(totalNumOfTo1);
         financialReport.setTotalNumOfTo2(totalNumOfTo2);
         financialReport.setTotalNumOfKr(totalNumOfKr);
@@ -99,6 +100,7 @@ public class FinancialReportService {
         financialReport.setTotalCostTo2(totalCostTo2);
         financialReport.setTotalCostKr(totalCostKr);
         financialReport.setTotalKilometrage(yearKilometrage);
+        financialReport.setTotalCosts(totalCosts);
     }
 
     private CarFinancialReport getCarFinancialReportFromCar(Car car) {

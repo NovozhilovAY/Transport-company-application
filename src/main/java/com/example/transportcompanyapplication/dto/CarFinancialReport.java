@@ -5,6 +5,7 @@ import com.example.transportcompanyapplication.model.Car;
 
 public class CarFinancialReport {
 
+    private Long id;
     private String brand;
 
     private String model;
@@ -40,7 +41,9 @@ public class CarFinancialReport {
                               Integer numOfKr,
                               Integer costOfTo1,
                               Integer costOfTo2,
-                              Integer costOfKr) {
+                              Integer costOfKr,
+                              Long id) {
+        this.id = id;
         this.brand = brand;
         this.model = model;
         this.licensePlate = licensePlate;
@@ -55,6 +58,7 @@ public class CarFinancialReport {
     }
 
     public CarFinancialReport(Car car) {
+        this.id = car.getId();
         this.brand = car.getBrand();
         this.model = car.getModel();
         this.avgKilometrage = car.getAvgKilometrage();
@@ -147,5 +151,13 @@ public class CarFinancialReport {
 
     public void setCostOfKr(Integer costOfKr) {
         this.costOfKr = costOfKr;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

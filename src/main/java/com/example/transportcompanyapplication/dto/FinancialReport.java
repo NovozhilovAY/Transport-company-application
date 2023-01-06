@@ -20,6 +20,8 @@ public class FinancialReport {
 
     private Integer totalCostKr;
 
+    private Integer totalCosts;
+
     public FinancialReport() {
     }
 
@@ -30,7 +32,7 @@ public class FinancialReport {
                            Integer totalNumOfKr,
                            Integer totalCostTo1,
                            Integer totalCostTo2,
-                           Integer totalCostKr) {
+                           Integer totalCostKr, Integer totalCosts) {
         this.carFinancialReports = carFinancialReports;
         this.totalKilometrage = totalKilometrage;
         this.totalNumOfTo1 = totalNumOfTo1;
@@ -39,6 +41,15 @@ public class FinancialReport {
         this.totalCostTo1 = totalCostTo1;
         this.totalCostTo2 = totalCostTo2;
         this.totalCostKr = totalCostKr;
+        this.totalCosts = totalCosts;
+    }
+
+    public Integer getTotalCosts() {
+        return totalCosts;
+    }
+
+    public void setTotalCosts(Integer totalCosts) {
+        this.totalCosts = totalCosts;
     }
 
     public List<CarFinancialReport> getCarFinancialReports() {

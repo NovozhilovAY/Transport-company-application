@@ -5,7 +5,6 @@ import com.example.transportcompanyapplication.correcting.utils.CategoryOfExploi
 import com.example.transportcompanyapplication.correcting.utils.CoeffK1;
 import com.example.transportcompanyapplication.correcting.utils.CoeffK3;
 import com.example.transportcompanyapplication.dto.NewCoordinatesOfCar;
-import com.example.transportcompanyapplication.dto.NextMaintDates;
 import com.example.transportcompanyapplication.exceptions.ResourceNotFoundException;
 import com.example.transportcompanyapplication.model.Car;
 import com.example.transportcompanyapplication.model.CorrectingData;
@@ -15,8 +14,6 @@ import com.example.transportcompanyapplication.repository.HistoryRepository;
 import com.example.transportcompanyapplication.util.PatchMapper;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -105,32 +102,6 @@ public class CarService extends AbstractService<Car, Long> {
         } else {
             car.setAvgKilometrage(allKilometrage / numOfDays);
         }
-    }
-
-    public NextMaintDates getNextMaintDates(Long carId) {
-        Car car = findById(carId);
-        String to1Date = getDateString(getNumOfDaysBeforeMaint(car.getAvgKilometrage(), car.getKmBeforeTo1()));
-        String to2Date = getDateString(getNumOfDaysBeforeMaint(car.getAvgKilometrage(), car.getKmBeforeTo2()));
-        String krDate = getDateString(getNumOfDaysBeforeMaint(car.getAvgKilometrage(), car.getKmBeforeKr()));
-        return new NextMaintDates(to1Date, to2Date, krDate);
-    }
-
-    private String getDateString(Integer numOfDays) {
-        if (numOfDays == null) {
-            return null;
-        }
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        return LocalDate.now().plusDays(numOfDays).format(dateFormat);
-    }
-
-    private Integer getNumOfDaysBeforeMaint(Double avgKilometrage, Double kmBeforeMaint) {
-        if (avgKilometrage == null) {
-            return null;
-        } else if (kmBeforeMaint <= 0.0) {
-            return 0;
-        }
-        double numOfDays = kmBeforeMaint / avgKilometrage;
-        return (int) numOfDays;
     }
 
     private void correctCarKilometrage(Car car) {

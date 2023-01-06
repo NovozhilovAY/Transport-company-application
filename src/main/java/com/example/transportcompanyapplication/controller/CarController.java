@@ -77,8 +77,4 @@ public class CarController {
         carService.updateAvgKilometrage();
     }
 
-    @GetMapping("/report/next-maint-dates/{id}")
-    public NextMaintDates getMaintDates(@PathVariable Long id) {
-        return  carService.getNextMaintDates(id);
-    }
 }
