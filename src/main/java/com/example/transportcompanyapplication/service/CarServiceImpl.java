@@ -95,7 +95,7 @@ public class CarServiceImpl extends AbstractServiceImpl<Car, Long> implements Ca
         Integer numOfDays = historyRepository.getNumOfDays(car.getId());
         Double allKilometrage = historyRepository.getAllKilometrage(car.getId());
         if (numOfDays.equals(0)) {
-            car.setAvgKilometrage(null);
+            car.setAvgKilometrage(getDefaultAvgKilometrage());
         } else {
             car.setAvgKilometrage(allKilometrage / numOfDays);
         }
