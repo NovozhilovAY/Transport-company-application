@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CarServiceImpl extends AbstractServiceImpl<Car, Long> implements CarService {
+public class CarServiceImpl extends CommonServiceImpl<Car, Long> implements CarService {
 
     private CorrectingRepository correctingRepository;
     private HistoryRepository historyRepository;

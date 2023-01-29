@@ -3,7 +3,7 @@ package com.example.transportcompanyapplication.service.api;
 import com.example.transportcompanyapplication.dto.NewCoordinatesOfCar;
 import com.example.transportcompanyapplication.model.Car;
 
-public interface CarService extends AbstractService<Car, Long>{
+public interface CarService extends CommonService<Car, Long> {
 
     Car updateCoordinates(Long id, NewCoordinatesOfCar newCoordinates);
 

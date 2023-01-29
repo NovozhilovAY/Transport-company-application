@@ -2,7 +2,7 @@ package com.example.transportcompanyapplication.service.api;
 
 import java.util.List;
 
-public interface AbstractService<T, ID> {
+public interface CommonService<T, ID> {
 
     List<T> findAll();
 

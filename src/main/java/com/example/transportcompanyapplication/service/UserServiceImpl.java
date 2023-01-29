@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class UserServiceImpl extends AbstractServiceImpl<User, Integer> implements UserService{
+public class UserServiceImpl extends CommonServiceImpl<User, Integer> implements UserService{
     private final PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository userRepository, PatchMapper<User> mapper, PasswordEncoder passwordEncoder) {

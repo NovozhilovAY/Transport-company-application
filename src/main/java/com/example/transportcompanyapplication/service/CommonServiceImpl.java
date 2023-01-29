@@ -2,20 +2,20 @@ package com.example.transportcompanyapplication.service;
 
 import com.example.transportcompanyapplication.exceptions.ResourceNotFoundException;
 import com.example.transportcompanyapplication.repository.extended.ExtendedRepository;
-import com.example.transportcompanyapplication.service.api.AbstractService;
+import com.example.transportcompanyapplication.service.api.CommonService;
 import com.example.transportcompanyapplication.util.PatchMapper;
 
 
 import java.util.List;
 
 
-public abstract class AbstractServiceImpl<T, ID> implements AbstractService<T, ID> {
+public abstract class CommonServiceImpl<T, ID> implements CommonService<T, ID> {
 
     protected final ExtendedRepository<T, ID> repository;
     protected final PatchMapper<T> mapper;
 
 
-    protected AbstractServiceImpl(ExtendedRepository<T, ID> repository, PatchMapper<T> mapper) {
+    protected CommonServiceImpl(ExtendedRepository<T, ID> repository, PatchMapper<T> mapper) {
         this.repository = repository;
         this.mapper = mapper;
     }
