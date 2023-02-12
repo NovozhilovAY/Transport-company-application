@@ -55,19 +55,19 @@ public class CarServiceImpl extends CommonServiceImpl<Car, Long> implements CarS
     public Car doTo1(Long id) {
         Car car = findById(id);
         car.doTo1();
-        return save(car);
+        return update(car, car.getId());
     }
 
     public Car doTo2(Long id) {
         Car car = findById(id);
         car.doTo2();
-        return save(car);
+        return update(car, car.getId());
     }
 
     public Car doKr(Long id) {
         Car car = findById(id);
         car.doKr();
-        return save(car);
+        return update(car, car.getId());
     }
 
     public void correctCarKilometrage(Long id) {

@@ -1,16 +1,18 @@
 package com.example.transportcompanyapplication.service;
 
-import com.example.transportcompanyapplication.dto.KmByDateIntervalRequest;
-import com.example.transportcompanyapplication.dto.KmByDateRequest;
+import com.example.transportcompanyapplication.dto.DateInterval;
+import com.example.transportcompanyapplication.dto.HistoryDatesRequest;
+import com.example.transportcompanyapplication.dto.HistoryIntervalsRequest;
 import com.example.transportcompanyapplication.exceptions.ResourceNotFoundException;
 import com.example.transportcompanyapplication.repository.CarRepository;
 import com.example.transportcompanyapplication.repository.HistoryRepository;
 import com.example.transportcompanyapplication.service.api.HistoryService;
 import com.example.transportcompanyapplication.util.DateComparator;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class HistoryServiceImpl implements HistoryService {
@@ -22,27 +24,33 @@ public class HistoryServiceImpl implements HistoryService {
         this.carRepository = carRepository;
     }
 
-    @Override
-    public Double getKilometrageByDate(KmByDateRequest request){
-        this.checkCarId(request.getCarId());
+    public List<Double> getKilometrageByDate(HistoryDatesRequest request){
+        this.checkCarId(request.getId());
         Date currentDate = new Date(System.currentTimeMillis());
-        if(DateComparator.equal(currentDate, request.getDate())){
-            return historyRepository.getKmForToday(request.getCarId());
-        }else {
-            return historyRepository.getKmByDate(request.getCarId(),request.getDate());
+        List<Double> result = new ArrayList<>();
+        for(Date date: request.getDates()){
+            if(DateComparator.equal(currentDate, date)){
+                result.add(historyRepository.getKmForToday(request.getId()));
+            }else {
+                result.add(historyRepository.getKmByDate(request.getId(),date));
+            }
         }
+        return result;
     }
 
-    @Override
-    public Double getKilometrageByDateInterval(KmByDateIntervalRequest request){
-        this.checkCarId(request.getCarId());
+    public List<Double> getKilometrageByDateInterval(HistoryIntervalsRequest request){
+        this.checkCarId(request.getId());
         Date currentDate = new Date(System.currentTimeMillis());
-        Double result = historyRepository.getKmByDateInterval(request.getCarId(), request.getDate(),request.getDate2());
-        if(DateComparator.equal(currentDate,request.getDate2())){
-            return result + historyRepository.getKmForToday(request.getCarId());
-        }else {
-            return result;
+        List<Double> result = new ArrayList<>();
+        for (DateInterval interval : request.getDateIntervals()){
+            if(DateComparator.intervalIncludesDate(interval, currentDate)){
+                result.add(historyRepository.getKmByDateInterval(request.getId(), interval.getFrom(), interval.getTo())
+                            + historyRepository.getKmForToday(request.getId()));
+            }else {
+                result.add(historyRepository.getKmByDateInterval(request.getId(), interval.getFrom(), interval.getTo()));
+            }
         }
+        return result;
     }
 
     private void checkCarId(Long carId){

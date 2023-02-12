@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/drivers")
+@CrossOrigin(value = "*")
 public class DriverController {
 
     final private DriverService service;
@@ -21,6 +22,11 @@ public class DriverController {
     @GetMapping
     public List<Driver> getAllDrivers() {
         return service.findAll();
+    }
+
+    @GetMapping("/free")
+    public List<Driver> getFreeDrivers(){
+        return service.getFreeDrivers();
     }
 
     @GetMapping("/{id}")

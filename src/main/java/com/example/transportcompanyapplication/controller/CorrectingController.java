@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/correcting")
+@CrossOrigin(value = "*")
 public class CorrectingController {
 
     private CorrectingService correctingService;

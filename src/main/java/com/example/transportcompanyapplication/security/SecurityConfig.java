@@ -1,8 +1,9 @@
 package com.example.transportcompanyapplication.security;
 
+import com.example.transportcompanyapplication.util.JwtUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,36 +12,45 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsServiceImpl userDetailsService;
+    private final AuthEntryPointJwt unauthorizedHandler;
+    private final JwtUtils jwtUtils;
 
-    public SecurityConfig(UserDetailsServiceImpl userDetailsService) {
+    public SecurityConfig(UserDetailsServiceImpl userDetailsService, AuthEntryPointJwt unauthorizedHandler, JwtUtils jwtUtils) {
         this.userDetailsService = userDetailsService;
+        this.unauthorizedHandler = unauthorizedHandler;
+        this.jwtUtils = jwtUtils;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .authorizeRequests()
-                    .antMatchers("/api/drivers/**").hasAnyRole("ADMIN", "DISPATCHER")
-                    .antMatchers("/api/history/**").hasAnyRole("ADMIN", "DISPATCHER")
-                    .antMatchers("/api/roles/**").hasAnyRole("ADMIN", "DISPATCHER")
-                    .antMatchers("/api/users/**").hasRole("ADMIN")
-                    .antMatchers("/api/cars/coordinates/**").hasAnyRole("ADMIN","DEVICE")
-                    .antMatchers("/api/cars/**").hasAnyRole("ADMIN", "DISPATCHER")
-                    .anyRequest().authenticated()
+                .cors().and().csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                    .formLogin().permitAll();
+                .authorizeRequests()
+                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/drivers/**").hasAnyRole("ADMIN", "DISPATCHER")
+                .antMatchers("/api/history/**").hasAnyRole("ADMIN", "DISPATCHER")
+                .antMatchers("/api/roles/**").hasAnyRole("ADMIN", "DISPATCHER")
+                .antMatchers("/api/users/**").hasRole("ADMIN")
+                .antMatchers("/api/cars/coordinates/**").hasAnyRole("ADMIN","DEVICE")
+                .antMatchers("/api/cars/**").hasAnyRole("ADMIN", "DISPATCHER")
+                .anyRequest().authenticated();
+        http.addFilterBefore(authenticationJWTTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(daoAuthenticationProvider());
+        auth.userDetailsService(userDetailsService).passwordEncoder(this.passwordEncoder());
     }
 
     @Bean
@@ -49,10 +59,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    protected DaoAuthenticationProvider daoAuthenticationProvider(){
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setPasswordEncoder(this.passwordEncoder());
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-        return daoAuthenticationProvider;
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return  super.authenticationManagerBean();
+    }
+
+    @Bean
+    public AuthTokenFilter authenticationJWTTokenFilter(){
+        return new AuthTokenFilter(jwtUtils, userDetailsService);
     }
 }
