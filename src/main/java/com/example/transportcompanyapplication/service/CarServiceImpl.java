@@ -39,6 +39,7 @@ public class CarServiceImpl extends CommonServiceImpl<Car, Long> implements CarS
 
     private Double getDefaultAvgKilometrage() {
         return repository.findAll().stream()
+                .filter(car -> car.getAvgKilometrage() != null)
                 .mapToDouble(Car::getAvgKilometrage)
                 .summaryStatistics()
                 .getAverage();

@@ -86,6 +86,8 @@ public class MaintenanceCalendarServiceImpl implements MaintenanceCalendarServic
     private String getDateString(Integer numOfDays) {
         if (numOfDays == null) {
             return null;
+        } else if (numOfDays.equals(0)) {
+            return "-";
         }
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return LocalDate.now().plusDays(numOfDays).format(dateFormat);
@@ -94,7 +96,7 @@ public class MaintenanceCalendarServiceImpl implements MaintenanceCalendarServic
     private Integer getNumOfDaysBeforeMaint(Double avgKilometrage, Double kmBeforeMaint) {
         if (avgKilometrage == null) {
             return null;
-        } else if (kmBeforeMaint <= 0.0) {
+        } else if (avgKilometrage <= 0.0) {
             return 0;
         }
         double numOfDays = kmBeforeMaint / avgKilometrage;
