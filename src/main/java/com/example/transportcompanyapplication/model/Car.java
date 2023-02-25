@@ -66,15 +66,12 @@ public class Car {
     private Double factKr;
 
     @Column(name = "km_before_to1", nullable = false)
-    @NotNull
     private Double kmBeforeTo1;
 
     @Column(name = "km_before_to2", nullable = false)
-    @NotNull
     private Double kmBeforeTo2;
 
     @Column(name = "km_before_kr", nullable = false)
-    @NotNull
     private Double kmBeforeKr;
 
     @Column(name = "latitude", nullable = false)
