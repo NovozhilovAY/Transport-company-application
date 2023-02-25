@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/financial-report")
+@CrossOrigin(value = "*")
 public class FinancialReportController {
 
     private final FinancialReportService service;
