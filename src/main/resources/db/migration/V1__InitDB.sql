@@ -345,7 +345,7 @@ INSERT INTO cars(brand, model, year, kilometrage, license_plate, normative_to1, 
     ('ВАЗ', '2121', 2010, 95000, 'B903MX152', 8000, 16000, 200000, 8000, 16000, 200000, 8000, 16000, 200000, 56.309760, 43.768631, 153, 6);
 
 INSERT INTO cars(brand, model, year, kilometrage, license_plate, normative_to1, normative_to2, normative_kr, fact_to1, fact_to2, fact_kr, km_before_to1, km_before_to2, km_before_kr, latitude, longitude, avg_kilometrage, driver_id) VALUES
-    ('ВАЗ', '2170', 2013, 55000, 'B430XE152', 8000, 16000, 200000, 8000, 16000, 200000, 8000, 16000, 200000, 56.200315, 43.890134, 250, 7);
+    ('ВАЗ', '2170', 2013, 55300, 'B430XE152', 8000, 16000, 200000, 8000, 16000, 200000, 8000, 16000, 200000, 56.200315, 43.890134, 250, 7);
 
 INSERT INTO cars(brand, model, year, kilometrage, license_plate, normative_to1, normative_to2, normative_kr, fact_to1, fact_to2, fact_kr, km_before_to1, km_before_to2, km_before_kr, latitude, longitude, avg_kilometrage, driver_id) VALUES
     ('ВАЗ', '2170', 2011, 88500, 'C505OC152', 8000, 16000, 200000, 8000, 16000, 200000, 8000, 16000, 200000, 56.243411, 44.085328, 38, 8);

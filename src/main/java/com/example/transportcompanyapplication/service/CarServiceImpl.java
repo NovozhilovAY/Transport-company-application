@@ -74,7 +74,8 @@ public class CarServiceImpl extends CommonServiceImpl<Car, Long> implements CarS
     public void correctCarKilometrage(Long id) {
         Car carToCorrect = repository.getById(id);
         correctCarKilometrage(carToCorrect);
-        save(carToCorrect);
+        carToCorrect.setDefaultKmBefore();
+        super.save(carToCorrect);
     }
 
     public void correctAllCarKilometrage() {
