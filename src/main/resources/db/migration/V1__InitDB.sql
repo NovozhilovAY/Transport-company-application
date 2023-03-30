@@ -314,3 +314,44 @@ INSERT INTO users(login, password) VALUES ('dispatcher', '$2a$10$6e60Gr./BAImN4z
 INSERT INTO user_roles(user_id, role_id) VALUES (3,2);
 
 INSERT INTO financial_report_data(num_working_days, to1_cost, to2_cost, kr_cost) VALUES (365, 10000, 20000, 150000);
+
+INSERT INTO drivers(last_name, first_name, middle_name, driving_license) VALUES ('Беляев', 'Артем', 'Александрович', '18 01 365123');
+INSERT INTO drivers(last_name, first_name, middle_name, driving_license) VALUES ('Повов', 'Платон', 'Егорович', '30 15 930476');
+INSERT INTO drivers(last_name, first_name, middle_name, driving_license) VALUES ('Чернышев', 'Роман', 'Иванович', '56 07 303057');
+INSERT INTO drivers(last_name, first_name, middle_name, driving_license) VALUES ('Никифоров', 'Георгий', 'Михайлович', '57 48 463210');
+INSERT INTO drivers(last_name, first_name, middle_name, driving_license) VALUES ('Потапов', 'Глеб', 'Владиславович', '24 07 024930');
+INSERT INTO drivers(last_name, first_name, middle_name, driving_license) VALUES ('Галкин', 'Владислав', 'Дмитриевич', '75 36 793625');
+INSERT INTO drivers(last_name, first_name, middle_name, driving_license) VALUES ('Богданов', 'Тимур', 'Николаевич', '54 69 316497');
+INSERT INTO drivers(last_name, first_name, middle_name, driving_license) VALUES ('Гущин', 'Владимир', 'Михайлович', '59 64 829173');
+INSERT INTO drivers(last_name, first_name, middle_name, driving_license) VALUES ('Воробьев', 'Сергей', 'Сергеевич', '64 54 813232');
+INSERT INTO drivers(last_name, first_name, middle_name, driving_license) VALUES ('Панин', 'Никита', 'Данилович', '58 70 603289');
+
+INSERT INTO cars(brand, model, year, kilometrage, license_plate, normative_to1, normative_to2, normative_kr, fact_to1, fact_to2, fact_kr, km_before_to1, km_before_to2, km_before_kr, latitude, longitude, avg_kilometrage, driver_id) VALUES
+    ('ВАЗ', '2115', 2010, 50000, 'X111PE152', 8000, 16000, 200000, 8000, 16000, 200000, 8000, 16000, 200000, 56.21990417154902, 43.937407852453845, 120, 1);
+
+INSERT INTO cars(brand, model, year, kilometrage, license_plate, normative_to1, normative_to2, normative_kr, fact_to1, fact_to2, fact_kr, km_before_to1, km_before_to2, km_before_kr, latitude, longitude, avg_kilometrage, driver_id) VALUES
+    ('ВАЗ', '2114', 2012, 80000, 'E378AE152', 8000, 16000, 200000, 8000, 16000, 200000, 8000, 16000, 200000, 56.316663891500895, 43.98327933667687, 85, 2);
+
+INSERT INTO cars(brand, model, year, kilometrage, license_plate, normative_to1, normative_to2, normative_kr, fact_to1, fact_to2, fact_kr, km_before_to1, km_before_to2, km_before_kr, latitude, longitude, avg_kilometrage, driver_id) VALUES
+    ('ВАЗ', '2107', 2012, 35000, 'A777AA152', 8000, 16000, 200000, 8000, 16000, 200000, 8000, 16000, 200000, 56.257559444121654, 44.00961905427317, 53, 3);
+
+INSERT INTO cars(brand, model, year, kilometrage, license_plate, normative_to1, normative_to2, normative_kr, fact_to1, fact_to2, fact_kr, km_before_to1, km_before_to2, km_before_kr, latitude, longitude, avg_kilometrage, driver_id) VALUES
+    ('ГАЗ', '2410', 2000, 47000, 'P410AT152', 8000, 16000, 200000, 8000, 16000, 200000, 8000, 16000, 200000, 56.352712, 44.057927, 75, 4);
+
+INSERT INTO cars(brand, model, year, kilometrage, license_plate, normative_to1, normative_to2, normative_kr, fact_to1, fact_to2, fact_kr, km_before_to1, km_before_to2, km_before_kr, latitude, longitude, avg_kilometrage, driver_id) VALUES
+    ('ГАЗ', '3102', 2001, 87000, 'O689MT152', 8000, 16000, 200000, 8000, 16000, 200000, 8000, 16000, 200000, 56.288791, 43.892313, 91, 5);
+
+INSERT INTO cars(brand, model, year, kilometrage, license_plate, normative_to1, normative_to2, normative_kr, fact_to1, fact_to2, fact_kr, km_before_to1, km_before_to2, km_before_kr, latitude, longitude, avg_kilometrage, driver_id) VALUES
+    ('ВАЗ', '2121', 2010, 95000, 'B903MX152', 8000, 16000, 200000, 8000, 16000, 200000, 8000, 16000, 200000, 56.309760, 43.768631, 153, 6);
+
+INSERT INTO cars(brand, model, year, kilometrage, license_plate, normative_to1, normative_to2, normative_kr, fact_to1, fact_to2, fact_kr, km_before_to1, km_before_to2, km_before_kr, latitude, longitude, avg_kilometrage, driver_id) VALUES
+    ('ВАЗ', '2170', 2013, 55000, 'B430XE152', 8000, 16000, 200000, 8000, 16000, 200000, 8000, 16000, 200000, 56.200315, 43.890134, 250, 7);
+
+INSERT INTO cars(brand, model, year, kilometrage, license_plate, normative_to1, normative_to2, normative_kr, fact_to1, fact_to2, fact_kr, km_before_to1, km_before_to2, km_before_kr, latitude, longitude, avg_kilometrage, driver_id) VALUES
+    ('ВАЗ', '2170', 2011, 88500, 'C505OC152', 8000, 16000, 200000, 8000, 16000, 200000, 8000, 16000, 200000, 56.243411, 44.085328, 38, 8);
+
+INSERT INTO cars(brand, model, year, kilometrage, license_plate, normative_to1, normative_to2, normative_kr, fact_to1, fact_to2, fact_kr, km_before_to1, km_before_to2, km_before_kr, latitude, longitude, avg_kilometrage, driver_id) VALUES
+    ('ВАЗ', '2113', 2010, 112000, 'X399YY152', 8000, 16000, 200000, 8000, 16000, 200000, 8000, 16000, 200000, 56.299817, 44.066605, 57, 9);
+
+INSERT INTO cars(brand, model, year, kilometrage, license_plate, normative_to1, normative_to2, normative_kr, fact_to1, fact_to2, fact_kr, km_before_to1, km_before_to2, km_before_kr, latitude, longitude, avg_kilometrage, driver_id) VALUES
+    ('ВАЗ', '2110', 2005, 81500, 'B302OP152', 8000, 16000, 200000, 8000, 16000, 200000, 8000, 16000, 200000, 56.339637, 43.924463, 49, 10);
