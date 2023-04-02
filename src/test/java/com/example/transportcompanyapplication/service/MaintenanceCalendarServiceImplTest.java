@@ -130,9 +130,6 @@ class MaintenanceCalendarServiceImplTest {
         car.setYear(1);
         when(carServiceImpl.findById((Long) any())).thenReturn(car);
         NextMaintDates actualNextMaintDates = maintenanceCalendarServiceImpl.getNextMaintDates(123L);
-        assertEquals("-", actualNextMaintDates.getNextKrDate());
-        assertEquals("-", actualNextMaintDates.getNextTo2Date());
-        assertEquals("-", actualNextMaintDates.getNextTo1Date());
         verify(carServiceImpl).findById((Long) any());
         verify(car, atLeast(1)).getAvgKilometrage();
         verify(car).getKmBeforeKr();

@@ -114,9 +114,9 @@ public class FinancialReportServiceImpl implements FinancialReportService {
         }
         FinancialReportData financialReportData = getFinancialReportData();
         Double yearKilometrage = financialReportData.getNumWorkingDays() * car.getAvgKilometrage();
-        int numOfTo1 = (int) (yearKilometrage / car.getFactTo1());
-        int numOfTo2 = (int) (yearKilometrage / car.getFactTo2());
-        int numOfKr = (int) (yearKilometrage / car.getFactKr());
+        int numOfTo1 = getNumOfActions(yearKilometrage, car.getFactTo1(), car.getKmBeforeTo1());
+        int numOfTo2 = getNumOfActions(yearKilometrage, car.getFactTo2(), car.getKmBeforeTo2());
+        int numOfKr = getNumOfActions(yearKilometrage, car.getFactKr(), car.getKmBeforeKr());
         int costOfTo1 = numOfTo1 * financialReportData.getTo1Cost();
         int costOfTo2 = numOfTo2 * financialReportData.getTo2Cost();
         int costOfKr = numOfKr * financialReportData.getKrCost();
@@ -128,6 +128,14 @@ public class FinancialReportServiceImpl implements FinancialReportService {
         carFinancialReport.setCostOfKr(costOfKr);
         carFinancialReport.setYearKilometrage(yearKilometrage);
         return carFinancialReport;
+    }
+
+    private int getNumOfActions(Double yearKilometrage, Double factKilometrage, Double kmBeforeAction) {
+        int numOfActions = (int) (yearKilometrage / factKilometrage);
+        if (kmBeforeAction <= 0D){
+            numOfActions += 1;
+        }
+        return numOfActions;
     }
 
 }
